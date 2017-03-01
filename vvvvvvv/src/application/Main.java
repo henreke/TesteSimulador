@@ -37,10 +37,10 @@ public class Main extends Application {
 	double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
 
-
+    boolean pare = false;
 	//Parte do jBox2D
 	//BouncyBall ball = new BouncyBall(45,90, Utility.BALL_RADIUS, Color.ALICEBLUE);
-    BouncyBall ball = new BouncyBall(Utility.toPosX(300),Utility.toPosX(300), Utility.BALL_RADIUS, Color.ALICEBLUE);
+    BouncyBall ball = new BouncyBall(45,90, Utility.BALL_RADIUS, Color.ALICEBLUE);
 
 	final Timeline timeline =  new Timeline();
 
@@ -143,20 +143,39 @@ public class Main extends Application {
 	    EventHandler<ActionEvent> ae = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                         //Create time step. Set Iteration count 8 for velocity and 3 for positions
-                        Utility.world.step(1.0f/60.f, 8, 3);
+
+            			Utility.world.step(1.0f/60.f, 8, 3);
 
                         //Move balls to the new position computed by JBox2D
                         Body body = (Body)ball.node.getUserData();
-                        float teste = ball.body.getPosition().x;
+
                         //body2.getPosition().x
                         float xpos = Utility.toPixelPosX(body.getPosition().x);
                         float ypos = Utility.toPixelPosY(body.getPosition().y);
                         float angulo2 = body.getAngle();
                         //ball.node.setLayoutX(xpos);
                         //ball.node.setLayoutY(ypos);
-                        cicle.setLayoutX( Utility.toPixelPosX(teste));
-                        cicle.setLayoutY(Utility.toPixelPosY(ball.body.getPosition().y));
+
+                        //Atualizacao do layout
+
+                        Vec2 nova = ball.body.getPosition();
+                        cicle.setLayoutX(Utility.toPixelPosX(nova.x));
+                        cicle.setLayoutY(Utility.toPixelPosY(nova.y));
                         cicle.setRotate(Utility.tograus(-angulo2));
+
+
+                        if (pare){
+                        	timeline.stop();
+
+
+                	        System.out.println("Posicao atual");
+                	        System.out.println( Utility.toPixelPosX(nova.x));
+                	        System.out.println( cicle);
+                	        System.out.println( Utility.toPixelPosY(nova.y));
+
+
+
+                        }
            }
         };
 
@@ -183,10 +202,12 @@ public class Main extends Application {
 
 		        @Override
 		        public void handle(MouseEvent t) {
-		            orgSceneX = t.getSceneX();
-		            orgSceneY = t.getSceneY();
-		            orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
-		            orgTranslateY = ((Circle)(t.getSource())).getTranslateY();
+		            //orgSceneX = t.getSceneX();
+		            //orgSceneY = t.getSceneY();
+		           // orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
+		           // orgTranslateY = ((Circle)(t.getSource())).getTranslateY();
+		            //System.out.println("clique");
+		            timeline.stop();
 		        }
 		    };
 
@@ -195,34 +216,57 @@ public class Main extends Application {
 
 		        @Override
 		        public void handle(MouseEvent t) {
-		            double offsetX = t.getSceneX() - orgSceneX;
-		            double offsetY = t.getSceneY() - orgSceneY;
-		            double newTranslateX = orgTranslateX + offsetX;
-		            double newTranslateY = orgTranslateY + offsetY;
+		            //double offsetX = t.getSceneX() - orgSceneX;
+		            //double offsetY = t.getSceneY() - orgSceneY;
+		            //double newTranslateX = orgTranslateX + offsetX;
+		            //double newTranslateY = orgTranslateY + offsetY;
 
-		            ((Circle)(t.getSource())).setTranslateX(newTranslateX);
-		            ((Circle)(t.getSource())).setTranslateY(newTranslateY);
+		            //((Circle)(t.getSource())).setTranslateX(newTranslateX);
+		            //((Circle)(t.getSource())).setTranslateY(newTranslateY);
+		            ((Circle)(t.getSource())).setLayoutX(t.getSceneX());
+		            ((Circle)(t.getSource())).setLayoutY(t.getSceneY());;
 		        }
 		    };
 
 	EventHandler<MouseEvent> circleOnFim = new EventHandler<MouseEvent>(){
 		@Override
         public void handle(MouseEvent t) {
-			System.out.println("Fim");
-			 double offsetX = t.getSceneX() - orgSceneX;
-	            double offsetY = t.getSceneY() - orgSceneY;
-	            double newTranslateX = orgTranslateX + offsetX;
-	            double newTranslateY = orgTranslateY + offsetY;
+			System.out.println("Cicle.getLayout()");
+			System.out.println(cicle.getLayoutX());
+	        System.out.println(cicle.getLayoutY());
 
-	            System.out.println(cicle.getLayoutX());
-	            System.out.println(cicle.getLayoutY());
-			Utility.world.destroyBody(ball.body);
+	        System.out.println("Mouse ponto");
+			System.out.println(t.getSceneX());
+	        System.out.println(t.getSceneY());
+
+			//Utility.world.destroyBody(ball.body);
 
         	//ball.bd.position.set( Utility.toPosX((float)cicle.getLayoutX()),Utility.toPosY((float)cicle.getLayoutY())+15);
-			ball.bd.position.set(45,90);
-        	ball.body = Utility.world.createBody(ball.bd);
-        	ball.body.createFixture(ball.fd);
-        	ball.node.setUserData(ball.body);
+			//ball.bd.position.set(45,90);
+        	//ball.body = Utility.world.createBody(ball.bd);
+        	//ball.body.createFixture(ball.fd);
+        	//ball.node.setUserData(ball.body);
+	        float xpos = Utility.toPosX((float)t.getSceneX());
+            float ypos = Utility.toPosY((float)t.getSceneY());
+            System.out.println("Posicao calculada");
+            System.out.println(xpos);
+	        System.out.println(ypos);
+	        Vec2 patual = ball.body.getPosition();
+	        System.out.println("Posicao bola");
+	        System.out.println(patual.x);
+	        System.out.println(patual.y);
+
+	        //aqui onde ocorre realmente a mudanca de posicao
+	        ball.body.setTransform(new Vec2(xpos, ypos),0);
+	        //zerando a velocidade para a bola n sair quicando como vinha antes
+	        ball.body.setLinearVelocity(new Vec2(0,0));
+
+	        Vec2 nova = ball.body.getPosition();
+	        System.out.println("Posicao atual");
+	        System.out.println(nova.x);
+	        System.out.println(nova.y);
+	        //pare = true;
+	        timeline.playFromStart();
 		}
 
 	};
