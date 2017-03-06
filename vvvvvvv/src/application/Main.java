@@ -33,7 +33,7 @@ public class Main extends Application {
 	Scene scene;
 	Stage stage;
 	Circle cicle;
-
+	World2 world;
 	double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
 
@@ -62,6 +62,7 @@ public class Main extends Application {
 			stage = primaryStage;
 			stage.setScene(scene);
 			stage.show();
+			this.world = new World2(new Vec2(0.0f,-10.0f));
 			System.out.println("Iniciou");
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -189,8 +190,33 @@ public class Main extends Application {
 	private void moverBola()
 	{
 		//Mover a forma
-		int index = pane.getChildren().size()-1;
-		pane.getChildren().get(index).setLayoutX(pane.getChildren().get(index).getLayoutX()+10);
+		//int index = pane.getChildren().size()-1;
+		//pane.getChildren().get(index).setLayoutX(pane.getChildren().get(index).getLayoutX()+10);
+
+		if (this.world == null)
+			this.world = new World2(new Vec2(0.0f,10.0f));
+		this.world.CriarCirculo(8, 200, 200, Color.ALICEBLUE);
+		pane.getChildren().add(world.bodys.get(0).shape);
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		Duration duration = Duration.seconds(1.0/60.0); //duracao do tempo quadro
+		  EventHandler<ActionEvent> ae = new EventHandler<ActionEvent>() {
+	            public void handle(ActionEvent t) {
+	                        //Create time step. Set Iteration count 8 for velocity and 3 for positions
+
+	            			world.tick();
+
+
+	           }
+	        };
+
+	        KeyFrame frame = new KeyFrame(duration, ae, null,null);
+
+	        timeline.getKeyFrames().add(frame);
+	        timeline.playFromStart();
+
+
+
+
 	}
 
 	public static void main(String[] args) {
