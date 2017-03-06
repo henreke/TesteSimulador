@@ -194,8 +194,8 @@ public class Main extends Application {
 		//pane.getChildren().get(index).setLayoutX(pane.getChildren().get(index).getLayoutX()+10);
 
 		if (this.world == null)
-			this.world = new World2(new Vec2(0.0f,10.0f));
-		this.world.CriarCirculo(8, 200, 200, Color.ALICEBLUE);
+			this.world = new World2(new Vec2(0.0f,-10.0f));
+		this.world.CriarCirculo(8, 200, 200, Color.RED);
 		pane.getChildren().add(world.bodys.get(0).shape);
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		Duration duration = Duration.seconds(1.0/60.0); //duracao do tempo quadro

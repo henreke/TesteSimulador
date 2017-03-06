@@ -14,14 +14,15 @@ import java.util.ArrayList;
 public class World2 extends org.jbox2d.dynamics.World{
 
 
-	public ArrayList<Body2> bodys;
-
+	public ArrayList<Body3> bodys;
+    public ArrayList<Shape> shapes;
 
 
 	public World2(Vec2 gravity) {
 		super(gravity);
 
-		bodys = new ArrayList<Body2>();
+		bodys = new ArrayList<Body3>();
+		shapes = new ArrayList<Shape>();
 
 	}
 
@@ -39,9 +40,16 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 	private void refreshWorld(){
 
-		for (Body2 body2 : this.bodys){
+		for (Body3 body : bodys){
 
-			body2.refreshPosicaoShape();
+			//Body3 body = bodys.get(i);
+
+			float angulo = body.physics.getAngle();
+
+	        Vec2 nova = body.physics.getPosition();
+	        body.shape.setLayoutX(Utility.toPixelPosX(nova.x));
+	        body.shape.setLayoutY(Utility.toPixelPosY(nova.y));
+	        body.shape.setRotate(Utility.tograus(-angulo));
 
 		}
 
@@ -49,7 +57,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	// TODO
 	/**
 	 *Aqui vamos criar uma lista dos Body que serão criados no World2 feito
-	 *Os corpos vão possuir uma propriedada dos pixels
+	 *
 	 *seria uma boa tambem o World2 possuir a Scena que ele vai brincar
 	 *Essa classe seria responsavel por atualizar a scena
 	 *pelos bodys
@@ -86,10 +94,21 @@ public class World2 extends org.jbox2d.dynamics.World{
         fd.friction = 0.1f;
         fd.restitution = 0.8f;
 
-        bodys.add((Body2) this.createBody(bd));
-        bodys.get(bodys.size()-1).createFixture(fd);
-        bodys.get(bodys.size()-1).shape = ball;
+        Body3 body = new Body3();
+        body.physics =this.createBody(bd);
+
+        body.shape = ball;
+        body.physics.createFixture(fd);
+
+        bodys.add(body);
+
 
 	}
+
+}
+class Body3{
+
+	public Body physics;
+	public Shape shape;
 
 }

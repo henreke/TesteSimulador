@@ -59,7 +59,7 @@ public class BouncyBall {
         fd = new FixtureDef();
         fd.shape = cs;
         fd.density = 4.6f;
-        fd.friction = 0.1f;
+        fd.friction = 0.0f;
         fd.restitution = 0.8f;
 
         body = Utility.world.createBody(bd);
