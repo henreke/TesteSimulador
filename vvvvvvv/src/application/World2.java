@@ -1,12 +1,17 @@
 package application;
 
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.collision.Manifold;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.dynamics.contacts.Contact;
 
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -63,7 +68,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        		body.shape.setLayoutX(Utility.toPixelPosX(nova.x));
 		        	body.shape.setLayoutY(Utility.toPixelPosY(nova.y));
 	        	}
-	        	System.out.println(body.physics.m_linearVelocity.y);
+	        	//System.out.println(body.physics.m_linearVelocity.y);
 	        	//System.out.println(body.shape.get);
 	        }
 
@@ -118,8 +123,10 @@ public class World2 extends org.jbox2d.dynamics.World{
         body.shape = ball;
         body.physics.createFixture(fd);
 
+        body.physics.setUserData(body);
         bodys.add(body);
-
+        Contato contato = new Contato();
+        this.setContactListener(contato);
         return bodys.indexOf(body);
 	}
 
@@ -149,7 +156,18 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 	        BodyDef bd = new BodyDef();
 	        bd.position.set(posX,posY);
-	        this.createBody(bd).createFixture(fd); //aqui ta diferente do tutorial
+
+	        //Teste sensor
+	        PolygonShape ps2 = new PolygonShape();
+	        ps.setAsBox(width+10, height);
+	        FixtureDef fd2 = new FixtureDef();
+	        fd2.shape = ps2;
+	        fd2.isSensor = true;
+
+
+	        Body body = this.createBody(bd); //aqui ta diferente do tutorial
+	        body.createFixture(fd);
+	        body.createFixture(fd2);
 	    }
 	//Adiciona uma rampa
     public  int addRampa(int PosX, int PosY, float width, float height, float rotation) {
@@ -183,6 +201,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 		body.shape = rampa;
 		body.fixo = true;
+		body.physics.setUserData(body);
 		bodys.add(body);
         //world.createBody(bd).createShape(sd);;
 		return bodys.indexOf(body);
@@ -194,5 +213,53 @@ class Body3{
 	public Body physics;
 	public Shape shape;
 	public boolean fixo = false;
+	public String nome = "";
+
+}
+class Contato implements ContactListener{
+	/**
+	 * Fazer uma lista de corpos que podem ser chocados, na verdade uma tupla o corpo e seu contato
+	 * A ideia é fazer o sensor
+	 * no teste do choque verificar se ele esta na lista ao invés de usar um 4 procurar nessa lista se
+	 * há a tupla e ai tratar
+	 * colocar maskbits talvez seja interessantes
+	 * http://www.iforce2d.net/b2dtut/sensors
+	 * http://www.iforce2d.net/b2dtut/user-data
+	 */
+
+	@Override
+	public void beginContact(Contact arg0) {
+		// TODO Auto-generated method stub
+		Fixture fixtureA = arg0.getFixtureA();
+		Fixture fixtureB = arg0.getFixtureB();
+		Body3 body = (Body3)fixtureB.getBody().getUserData();
+
+
+		if (body != null)
+		{
+			System.out.println("Contato");
+			System.out.println(body.physics.getLinearVelocity().y);
+		}
+
+	}
+
+	@Override
+	public void endContact(Contact arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void postSolve(Contact arg0, ContactImpulse arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void preSolve(Contact arg0, Manifold arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
 
 }
