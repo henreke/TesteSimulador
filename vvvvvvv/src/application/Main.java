@@ -195,34 +195,54 @@ public class Main extends Application {
 
 		if (this.world == null)
 			this.world = new World2(new Vec2(0.0f,-10.0f));
-		this.world.CriarCirculo(8, 200, 200, Color.RED);
-		pane.getChildren().add(world.bodys.get(0).shape);
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		Duration duration = Duration.seconds(1.0/60.0); //duracao do tempo quadro
-		  EventHandler<ActionEvent> ae = new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	                        //Create time step. Set Iteration count 8 for velocity and 3 for positions
+		int index = this.world.CriarCirculo(8, 200, 20, Color.RED);
+		pane.getChildren().add(world.bodys.get(index).shape);
 
-	            			world.tick();
-
-
-	           }
-	        };
-
-	        KeyFrame frame = new KeyFrame(duration, ae, null,null);
-
-	        timeline.getKeyFrames().add(frame);
-	        timeline.playFromStart();
 
 
 
 
 	}
 
+	@FXML
+	private void addRampa(){
+
+		if (this.world == null)
+			this.world = new World2(new Vec2(0.0f,-10.0f));
+
+		int angulo = 20;
+
+		int index = this.world.addRampa(0, 300, 400, 10,angulo);
+		pane.getChildren().add(world.bodys.get(index).shape);
+		world.addGround(200, 15);
+
+		world.addWall(0, 400, 1, 400);
+        world.addWall(Utility.toPosX(400), 400, 1, 400);
+
+
+
+	}
+	@FXML
+	private void starttime(){
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		Duration duration = Duration.seconds(1.0/60.0); //duracao do tempo quadro
+
+
+	        KeyFrame frame = new KeyFrame(duration, eventotempo, null,null);
+
+	        timeline.getKeyFrames().add(frame);
+	        timeline.playFromStart();
+	}
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	EventHandler<ActionEvent> eventotempo = new EventHandler<ActionEvent>() {
+        public void handle(ActionEvent t) {
+                    //Create time step. Set Iteration count 8 for velocity and 3 for positions
+       			world.tick();
+       }
+    };
 	EventHandler<MouseEvent> circleOnMousePressedEventHandler =
 		        new EventHandler<MouseEvent>() {
 

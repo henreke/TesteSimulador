@@ -106,7 +106,15 @@ public class Utility {
     public static float toPixelHeight(float height) {
         return HEIGHT*height/100.0f;
     }
+    //converte pixel height to jbox2d height
+    public static float toHeight(float height){
+    	return height*100.0f/HEIGHT;
+    }
 
+    //converte pixel width to jbox2d height
+    public static float toWidth(float width){
+    	return width*100f/WIDTH;
+    }
     public static float tograus(float rad){
     	return (float) (rad*180/Math.PI);
     }
