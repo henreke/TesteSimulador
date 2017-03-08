@@ -57,13 +57,17 @@ public class Main extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource( "MainForm.fxml"));
 			root = (AnchorPane) loader.load();
-			scene = new Scene(root,600,600);
+			Utility.CalcularTela();
+			scene = new Scene(root,Utility.WIDTH*0.8,Utility.HEIGHT*0.8);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			stage = primaryStage;
 			stage.setScene(scene);
 			stage.show();
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 			System.out.println("Iniciou");
+			
+			
+	        //fim
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -230,14 +234,25 @@ public class Main extends Application {
 	}
 	@FXML
 	private void starttime(){
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		Duration duration = Duration.seconds(1.0/60.0); //duracao do tempo quadro
-
-
-	        KeyFrame frame = new KeyFrame(duration, eventotempo, null,null);
-
-	        timeline.getKeyFrames().add(frame);
-	        timeline.playFromStart();
+		if (world != null){
+			if (timeline.getKeyFrames().isEmpty()){
+				//Configuracao do timer
+				Duration duration = Duration.seconds(1.0/60.0); //duracao do tempo quadro
+		        KeyFrame frame = new KeyFrame(duration, eventotempo, null,null);
+		        timeline.getKeyFrames().add(frame);
+			}
+			timeline.setCycleCount(Timeline.INDEFINITE);
+			timeline.playFromStart();
+		}
+	}
+	@FXML
+	private void stoptime(){
+		timeline.stop();
+	}
+	
+	@FXML
+	private void recomecar(){
+		Utility.CalcularTela();
 	}
 	public static void main(String[] args) {
 		launch(args);
@@ -246,6 +261,7 @@ public class Main extends Application {
 	EventHandler<ActionEvent> eventotempo = new EventHandler<ActionEvent>() {
         public void handle(ActionEvent t) {
                     //Create time step. Set Iteration count 8 for velocity and 3 for positions
+        	
        			world.tick();
        }
     };

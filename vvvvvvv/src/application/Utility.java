@@ -1,5 +1,8 @@
 package application;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyDef;
@@ -16,8 +19,8 @@ public class Utility {
     public static final World world = new World(new Vec2(0.0f,-10.0f));
 
     //Largura e altura da tela
-    public static final int WIDTH = 600;
-    public static final int HEIGHT = 600;
+    public static int WIDTH = 600;
+    public static int HEIGHT = 600;
 
     //Raio das bolas em pixels
     public static final int BALL_RADIUS = 8;
@@ -120,6 +123,19 @@ public class Utility {
     }
     public static float torad(float deg){
     	return (float) (deg*Math.PI/180);
+    }
+    
+    public static void CalcularTela(){
+    	
+    	WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+    	HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
+
+    	/* Para vários monitores
+    	 * GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		int width = gd.getDisplayMode().getWidth();
+		int height = gd.getDisplayMode().getHeight();
+    	 * */
+    	
     }
 }
 

@@ -1,15 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pane" prefHeight="54.0" prefWidth="218.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
+<AnchorPane prefHeight="653.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
    <children>
-      <Label fx:id="lab" layoutY="37.0" text="Label" />
-      <Button mnemonicParsing="false" onAction="#sayhello" text="Colcoar" />
-      <Button layoutX="62.0" layoutY="2.0" mnemonicParsing="false" onAction="#moverBola" text="Mover" />
-      <Button layoutX="124.0" layoutY="2.0" mnemonicParsing="false" onAction="#addRampa" text="Rampa" />
-      <Button layoutX="178.0" layoutY="2.0" mnemonicParsing="false" onAction="#starttime" text="Iniciar" />
+      <SplitPane dividerPositions="0.09523809523809523" orientation="VERTICAL" prefHeight="653.0" prefWidth="596.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="43.0" prefWidth="594.0">
+               <children>
+                  <Button layoutX="78.0" layoutY="31.0" mnemonicParsing="false" onAction="#stoptime" text="Parar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="78.0" />
+                  <Button layoutX="110.0" layoutY="1.0" mnemonicParsing="false" onAction="#starttime" text="Iniciar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
+                  <Button layoutX="151.0" layoutY="31.0" mnemonicParsing="false" onAction="#recomecar" text="Recomeçar" AnchorPane.bottomAnchor="0.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <SplitPane dividerPositions="0.6640926640926641" prefHeight="472.0" prefWidth="520.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane fx:id="pane" minHeight="0.0" minWidth="0.0" prefHeight="589.0" prefWidth="403.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="448.0" prefWidth="222.0">
+                           <children>
+                              <Button layoutX="19.0" layoutY="18.0" mnemonicParsing="false" onAction="#sayhello" text="Colcoar" />
+                              <Button layoutX="20.0" layoutY="51.0" mnemonicParsing="false" onAction="#moverBola" text="Mover" />
+                              <Button layoutX="91.0" layoutY="18.0" mnemonicParsing="false" onAction="#addRampa" text="Rampa" />
+                              <Button layoutX="83.0" layoutY="61.0" mnemonicParsing="false" onAction="#starttime" text="Iniciar" />
+                              <Label fx:id="lab" layoutX="36.0" layoutY="91.0" text="Label" />
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
    </children>
 </AnchorPane>
