@@ -217,7 +217,7 @@ public class Main extends Application {
 		
 		index = world.addSensor(0, 400, 600, 1);
 		pane.getChildren().add(world.bodys.get(index).shape);
-		
+		pane.getChildren().add(world.bodys.get(index).imagem);
 		world.addGround(200, 15);
 
 		index = world.addWall(0, 0, 4, 600);

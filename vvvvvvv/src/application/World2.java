@@ -17,6 +17,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 public class World2 extends org.jbox2d.dynamics.World{
@@ -67,6 +69,13 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        		body.shape.setRotate(Utility.tograus(-angulo));
 	        		body.shape.setLayoutX(Utility.toPixelPosX(nova.x));
 		        	body.shape.setLayoutY(Utility.toPixelPosY(nova.y));
+		        	
+		        	
+		        	//Retirar depois
+		        	if (Math.abs(body.physics.getLinearVelocity().y) < 0.01){
+		        		System.out.print("Posicao Inicial ");
+		        		System.out.println(nova.y);
+		        	}
 	        	}
 	        	//System.out.println(body.physics.m_linearVelocity.y);
 	        	//System.out.println(body.shape.get);
@@ -186,7 +195,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        body.physics.setUserData(body);
 	        
 	        body.shape = parede;
-	        
+	        body.fixo = true;
 	        bodys.add(body);
 	        //world.createBody(bd).createShape(sd);;
 			return bodys.indexOf(body);
@@ -255,11 +264,22 @@ public class World2 extends org.jbox2d.dynamics.World{
         
         
       //Forma Parede
-        Rectangle parede = new Rectangle(width, height);
+       Rectangle parede = new Rectangle(width, height);
 		parede.setLayoutX(posX);
 		parede.setLayoutY(posY);
 		parede.setFill(Color.GREEN);
 
+		//Imagem do sensor
+        Image image = new Image(World2.class.getResourceAsStream("sensor.png"));
+        ImageView iv = new ImageView();
+        iv.setImage(image);
+        iv.setFitWidth(60);
+        iv.setPreserveRatio(true);
+        iv.setSmooth(true);
+        iv.setCache(true);
+        
+        iv.setLayoutX(posX);
+        iv.setLayoutY(posY);
 
 		Body3 body = new Body3();
 
@@ -268,8 +288,9 @@ public class World2 extends org.jbox2d.dynamics.World{
         body.physics.createFixture(fd2);
         body.physics.setUserData(body);
         
+        body.imagem = iv;
         body.shape = parede;
-        
+        body.fixo = true;
         bodys.add(body);
         //world.createBody(bd).createShape(sd);;
 		return bodys.indexOf(body);
@@ -280,6 +301,7 @@ class Body3{
 
 	public Body physics;
 	public Shape shape;
+	public ImageView  imagem; 
 	public boolean fixo = false;
 	public String nome = "";
 	
@@ -320,6 +342,8 @@ class Contato implements ContactListener{
 		{
 			System.out.println("Contato");
 			System.out.println(body.physics.getLinearVelocity().y);
+			System.out.print("Posicao ");
+			System.out.println(body.physics.getPosition().y);
 		}
 		
 		body = (Body3)fixtureA.getBody().getUserData();
@@ -329,6 +353,8 @@ class Contato implements ContactListener{
 		{
 			System.out.println("Contato");
 			System.out.println(body.physics.getLinearVelocity().y);
+			System.out.print("Posicao ");
+			System.out.println(body.physics.getPosition().y);
 		}
 
 	}
