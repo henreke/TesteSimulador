@@ -78,7 +78,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	}
 	// TODO
 	/**
-	 *Aqui vamos criar uma lista dos Body que serão criados no World2 feito
+	 *Aqui vamos criar uma lista dos Body que serï¿½o criados no World2 feito
 	 *
 	 *seria uma boa tambem o World2 possuir a Scena que ele vai brincar
 	 *Essa classe seria responsavel por atualizar a scena
@@ -90,13 +90,13 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 	public int CriarCirculo(float raio,int pixelX, int pixelY,Color cor){
 
-		/// Todos os parâmetros passados serão em  pixels.
+		/// Todos os parï¿½metros passados serï¿½o em  pixels.
 
 		float posX = Utility.toPosX(pixelX);
 		float posY = Utility.toPosY(pixelY);
 		float raioreal = Utility.toPosX(raio);
 
-		//criar a definição da bola visual
+		//criar a definiï¿½ï¿½o da bola visual
 		Circle ball = new Circle();
         ball.setRadius(Utility.toPixelHeight(raio));
         ball.setFill(cor);
@@ -115,8 +115,9 @@ public class World2 extends org.jbox2d.dynamics.World{
         fd.shape = cs;
         fd.density = 4.6f;
         fd.friction = 0.1f;
-        fd.restitution = 0.8f;
-
+        fd.restitution = 1.0f;
+        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
+        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
         Body3 body = new Body3();
         body.physics =this.createBody(bd);
 
@@ -135,39 +136,60 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        ps.setAsBox(width, height);
 	        FixtureDef fd = new FixtureDef();
 	        fd.shape = ps;
-
+	        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+	        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
 	        BodyDef bd = new BodyDef();
-	        bd.position = new Vec2(0.0f,0f);
+	        bd.position = new Vec2(0.0f,-10f);
 
 	        this.createBody(bd).createFixture(fd);
 	    }
 
 	    //adiciona uma parede
 
-	    public  void addWall(float posX, float posY,float width,float height){
+	    public  int addWall(float posX, float posY,float width,float height){
 
 	        PolygonShape ps = new PolygonShape();
-	        ps.setAsBox(width, height);
+	        ps.setAsBox(Utility.toWidth(width), Utility.toHeight(height));
 
 	        FixtureDef fd = new FixtureDef();
 	        fd.shape = ps;
 	        fd.density = 1.0f;
 	        fd.friction = 0.3f;
-
+	        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+	        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
 	        BodyDef bd = new BodyDef();
-	        bd.position.set(posX,posY);
+	        float x = Utility.toPosX(posX);
+	    	float y =  Utility.toPosY(posY);
+	        bd.position.set(x,y);
 
 	        //Teste sensor
 	        PolygonShape ps2 = new PolygonShape();
-	        ps.setAsBox(width+10, height);
+	        ps2.setAsBox(width+10, height);
 	        FixtureDef fd2 = new FixtureDef();
 	        fd2.shape = ps2;
 	        fd2.isSensor = true;
+	        fd2.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+	        fd2.filter.maskBits = Body3.ContactType.BODYS.tipo();
+	        
+	        
+	      //Forma Parede
+	        Rectangle parede = new Rectangle(width, height);
+			parede.setLayoutX(posX);
+			parede.setLayoutY(posY);
 
 
-	        Body body = this.createBody(bd); //aqui ta diferente do tutorial
-	        body.createFixture(fd);
-	        body.createFixture(fd2);
+			Body3 body = new Body3();
+	        
+	        body.physics = this.createBody(bd); //aqui ta diferente do tutorial
+	        body.physics.createFixture(fd);
+	        body.physics.createFixture(fd2);
+	        body.physics.setUserData(body);
+	        
+	        body.shape = parede;
+	        
+	        bodys.add(body);
+	        //world.createBody(bd).createShape(sd);;
+			return bodys.indexOf(body);
 	    }
 	//Adiciona uma rampa
     public  int addRampa(int PosX, int PosY, float width, float height, float rotation) {
@@ -181,6 +203,8 @@ public class World2 extends org.jbox2d.dynamics.World{
         FixtureDef fd = new FixtureDef();
         fd.shape = ps;
         fd.friction = 0.1f;
+        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
     	BodyDef bd = new BodyDef();
     	float x = Utility.toPosX(PosX);
     	float y =  Utility.toPosY(PosY);
@@ -192,9 +216,10 @@ public class World2 extends org.jbox2d.dynamics.World{
         body.physics = this.createBody(bd);
         body.physics.createFixture(fd);
 
-        Rectangle rampa = new Rectangle(width, height);
+        
 
 		//Forma
+        Rectangle rampa = new Rectangle(width, height);
 		rampa.setLayoutX(PosX);
 		rampa.setLayoutY(PosY-rampa.getHeight());
 		rampa.getTransforms().add(new Rotate(-rotation,0,0,0));
@@ -206,6 +231,49 @@ public class World2 extends org.jbox2d.dynamics.World{
         //world.createBody(bd).createShape(sd);;
 		return bodys.indexOf(body);
     }
+    
+    
+    public  int addSensor(float posX, float posY,float width,float height){
+
+        PolygonShape ps = new PolygonShape();
+        ps.setAsBox(Utility.toWidth(width), Utility.toHeight(height));
+
+
+        BodyDef bd = new BodyDef();
+        float x = Utility.toPosX(posX);
+    	float y =  Utility.toPosY(posY);
+        bd.position.set(x,y);
+
+        //Teste sensor
+        PolygonShape ps2 = new PolygonShape();
+        ps2.setAsBox(width, height);
+        FixtureDef fd2 = new FixtureDef();
+        fd2.shape = ps2;
+        fd2.isSensor = true;
+        fd2.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+        fd2.filter.maskBits = Body3.ContactType.BODYS.tipo();
+        
+        
+      //Forma Parede
+        Rectangle parede = new Rectangle(width, height);
+		parede.setLayoutX(posX);
+		parede.setLayoutY(posY);
+		parede.setFill(Color.GREEN);
+
+
+		Body3 body = new Body3();
+
+        
+        body.physics = this.createBody(bd); //aqui ta diferente do tutorial
+        body.physics.createFixture(fd2);
+        body.physics.setUserData(body);
+        
+        body.shape = parede;
+        
+        bodys.add(body);
+        //world.createBody(bd).createShape(sd);;
+		return bodys.indexOf(body);
+    }
 
 }
 class Body3{
@@ -214,14 +282,27 @@ class Body3{
 	public Shape shape;
 	public boolean fixo = false;
 	public String nome = "";
+	
+	public static enum ContactType{
+		BODYS (0x0002),
+		SENSOR (0x0004);
+		
+		private final int tipo;
+		ContactType(int tipo){
+			this.tipo = tipo;
+		}
+		public int tipo(){
+			return tipo;
+		}
+	}
 
 }
 class Contato implements ContactListener{
 	/**
 	 * Fazer uma lista de corpos que podem ser chocados, na verdade uma tupla o corpo e seu contato
-	 * A ideia é fazer o sensor
-	 * no teste do choque verificar se ele esta na lista ao invés de usar um 4 procurar nessa lista se
-	 * há a tupla e ai tratar
+	 * A ideia ï¿½ fazer o sensor
+	 * no teste do choque verificar se ele esta na lista ao invï¿½s de usar um 4 procurar nessa lista se
+	 * hï¿½ a tupla e ai tratar
 	 * colocar maskbits talvez seja interessantes
 	 * http://www.iforce2d.net/b2dtut/sensors
 	 * http://www.iforce2d.net/b2dtut/user-data
@@ -235,7 +316,16 @@ class Contato implements ContactListener{
 		Body3 body = (Body3)fixtureB.getBody().getUserData();
 
 
-		if (body != null)
+		if ((body != null) && (!fixtureB.isSensor()))
+		{
+			System.out.println("Contato");
+			System.out.println(body.physics.getLinearVelocity().y);
+		}
+		
+		body = (Body3)fixtureA.getBody().getUserData();
+
+
+		if ((body != null) && (!fixtureA.isSensor()))
 		{
 			System.out.println("Contato");
 			System.out.println(body.physics.getLinearVelocity().y);

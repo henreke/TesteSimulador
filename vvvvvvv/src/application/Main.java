@@ -211,13 +211,19 @@ public class Main extends Application {
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 
 		int angulo = 20;
-
-		int index = this.world.addRampa(0, 300, 400, 10,angulo);
+		int index = 0;
+		//index = this.world.addRampa(0, 300, 400, 10,angulo);
+		//pane.getChildren().add(world.bodys.get(index).shape);
+		
+		index = world.addSensor(0, 400, 600, 1);
 		pane.getChildren().add(world.bodys.get(index).shape);
+		
 		world.addGround(200, 15);
 
-		world.addWall(0, 400, 1, 400);
-        world.addWall(Utility.toPosX(400), 400, 1, 400);
+		index = world.addWall(0, 0, 4, 600);
+		pane.getChildren().add(world.bodys.get(index).shape);
+		index = world.addWall(600, 0, 4, 600);
+		pane.getChildren().add(world.bodys.get(index).shape);
 
 
 
