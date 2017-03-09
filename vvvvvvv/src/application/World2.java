@@ -108,6 +108,8 @@ public class World2 extends org.jbox2d.dynamics.World{
 		//criar a defini��o da bola visual
 		Circle ball = new Circle();
         ball.setRadius(Utility.toPixelHeight(raio));
+        ball.setLayoutX(pixelX);
+        ball.setLayoutY(pixelY);
         ball.setFill(cor);
 
 
@@ -151,6 +153,42 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        bd.position = new Vec2(0.0f,-10f);
 
 	        this.createBody(bd).createFixture(fd);
+	    }
+	 public  int addGround(float posX, float posY,float width,float height){
+
+	        PolygonShape ps = new PolygonShape();
+	        ps.setAsBox(Utility.toWidth(width), Utility.toHeight(height));
+
+	        FixtureDef fd = new FixtureDef();
+	        fd.shape = ps;
+	        fd.density = 1.0f;
+	        fd.friction = 0.3f;
+	        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+	        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
+	        BodyDef bd = new BodyDef();
+	        float x = Utility.toPosX(posX);
+	    	float y =  Utility.toPosY(posY);
+	        bd.position.set(x,y);
+
+	        
+	        
+	      //Forma Parede
+	        Rectangle parede = new Rectangle(width, height);
+			parede.setLayoutX(posX);
+			parede.setLayoutY(posY-parede.getHeight());
+
+
+			Body3 body = new Body3();
+	        
+	        body.physics = this.createBody(bd); //aqui ta diferente do tutorial
+	        body.physics.createFixture(fd);
+	        body.physics.setUserData(body);
+	        
+	        body.shape = parede;
+	        body.fixo = true;
+	        bodys.add(body);
+	        //world.createBody(bd).createShape(sd);;
+			return bodys.indexOf(body);
 	    }
 
 	    //adiciona uma parede

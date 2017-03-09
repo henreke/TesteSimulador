@@ -17,6 +17,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -24,6 +25,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import javafx.scene.input.MouseEvent;
 
@@ -45,10 +47,24 @@ public class Main extends Application {
 	final Timeline timeline =  new Timeline();
 
 	@FXML
-	private AnchorPane pane;
+	private AnchorPane playground;
+	
+	@FXML
+	private AnchorPane toolbox;
+	
+	@FXML
+	private SplitPane split_toolbox_playground; 
 
 	@FXML
 	private Label lab;
+	
+	//Parte de adicionar Formas
+	@FXML
+	private Circle circle2;
+	
+	boolean adicionando = false;
+	
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -58,13 +74,14 @@ public class Main extends Application {
 			loader.setLocation(Main.class.getResource( "MainForm.fxml"));
 			root = (AnchorPane) loader.load();
 			Utility.CalcularTela();
-			scene = new Scene(root,Utility.WIDTH*0.8,Utility.HEIGHT*0.8);
+			scene = new Scene(root,Utility.WIDTH,Utility.HEIGHT);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			stage = primaryStage;
 			stage.setScene(scene);
 			stage.show();
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 			System.out.println("Iniciou");
+			
 			
 			
 	        //fim
@@ -118,7 +135,7 @@ public class Main extends Application {
 			}
 		});*/
 		//Adicionar uma bola ao anchorPane
-		pane.getChildren().add(cicle);
+		playground.getChildren().add(cicle);
 
 		//Parte do jbox2D
 		Utility.addGround(200, 10);
@@ -139,7 +156,7 @@ public class Main extends Application {
 		rampa.setLayoutY(310);
 		////Rotate(angulo negativo,valor de x em relacao a origem do corpo, y, z)
 		rampa.getTransforms().add(new Rotate(-angulo,0,0,0));
-		pane.getChildren().add(rampa);
+		playground.getChildren().add(rampa);
 
 
 		timeline.setCycleCount(Timeline.INDEFINITE);
@@ -194,13 +211,13 @@ public class Main extends Application {
 	private void moverBola()
 	{
 		//Mover a forma
-		//int index = pane.getChildren().size()-1;
-		//pane.getChildren().get(index).setLayoutX(pane.getChildren().get(index).getLayoutX()+10);
+		//int index = playground.getChildren().size()-1;
+		//playground.getChildren().get(index).setLayoutX(playground.getChildren().get(index).getLayoutX()+10);
 
 		if (this.world == null)
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 		int index = this.world.CriarCirculo(8, 200, 20, Color.RED);
-		pane.getChildren().add(world.bodys.get(index).shape);
+		playground.getChildren().add(world.bodys.get(index).shape);
 
 
 
@@ -217,23 +234,28 @@ public class Main extends Application {
 		int angulo = 20;
 		int index = 0;
 		//index = this.world.addRampa(0, 300, 400, 10,angulo);
-		//pane.getChildren().add(world.bodys.get(index).shape);
+		//playground.getChildren().add(world.bodys.get(index).shape);
 		
 		index = world.addSensor(0, 400, 600, 1);
-		pane.getChildren().add(world.bodys.get(index).shape);
-		pane.getChildren().add(world.bodys.get(index).imagem);
+		playground.getChildren().add(world.bodys.get(index).shape);
+		playground.getChildren().add(world.bodys.get(index).imagem);
 		world.addGround(200, 15);
 
 		index = world.addWall(0, 0, 4, 600);
-		pane.getChildren().add(world.bodys.get(index).shape);
+		playground.getChildren().add(world.bodys.get(index).shape);
 		index = world.addWall(600, 0, 4, 600);
-		pane.getChildren().add(world.bodys.get(index).shape);
+		playground.getChildren().add(world.bodys.get(index).shape);
 
 
 
 	}
 	@FXML
 	private void starttime(){
+		System.out.println("Tamanho do Painel de simulação");
+		System.out.println(playground.getWidth());
+		System.out.println(playground.getHeight());
+		Utility.WIDTH = (int)playground.getWidth();
+		Utility.HEIGHT = (int)playground.getHeight();
 		if (world != null){
 			if (timeline.getKeyFrames().isEmpty()){
 				//Configuracao do timer
@@ -244,6 +266,11 @@ public class Main extends Application {
 			timeline.setCycleCount(Timeline.INDEFINITE);
 			timeline.playFromStart();
 		}
+		
+		
+//		circle2.setOnMousePressed(circleOnMousePressedEventHandler);
+//		circle2.setOnMouseDragged(circleOnMouseDraggedEventHandler);
+//		circle2.setOnMouseReleased(circleOnFim);
 	}
 	@FXML
 	private void stoptime(){
@@ -256,6 +283,7 @@ public class Main extends Application {
 	}
 	public static void main(String[] args) {
 		launch(args);
+		
 	}
 
 	EventHandler<ActionEvent> eventotempo = new EventHandler<ActionEvent>() {
@@ -270,38 +298,96 @@ public class Main extends Application {
 
 		        @Override
 		        public void handle(MouseEvent t) {
-		            //orgSceneX = t.getSceneX();
-		            //orgSceneY = t.getSceneY();
-		           // orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
-		           // orgTranslateY = ((Circle)(t.getSource())).getTranslateY();
+		            /*orgSceneX = t.getSceneX();
+		            orgSceneY = t.getSceneY();
+		            orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
+		            orgTranslateY = ((Circle)(t.getSource())).getTranslateY();*/
 		            //System.out.println("clique");
 		            timeline.stop();
 		        }
 		    };
+		    
+		    
+	  @FXML
+	  private void ShapeMousePressed(MouseEvent t){
+		  
+		  orgSceneX = t.getSceneX();
+          orgSceneY = t.getSceneY();
+          orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
+          orgTranslateY = ((Circle)(t.getSource())).getTranslateY();
+		  adicionando = false;
+	  }
 
+	  @FXML
+	  private void ShapeMouseDragged(MouseEvent t){
+		  
+	
+		  double offsetX = t.getSceneX() - orgSceneX;
+          double offsetY = t.getSceneY() - orgSceneY;
+          double newTranslateX = orgTranslateX + offsetX;
+          double newTranslateY = orgTranslateY + offsetY;
+
+          ((Shape)(t.getSource())).setTranslateX(newTranslateX);
+          ((Shape)(t.getSource())).setTranslateY(newTranslateY);
+          double posX = ((Shape)(t.getSource())).getBoundsInParent().getMinX();
+          
+          if (!adicionando){
+        	  if (posX<0){
+        		  
+        		  adicionando = true;
+
+        		  
+        		  playground.getChildren().add(circle2);
+        		  circle2.setLayoutX(t.getSceneX());
+        	  }
+          }
+          System.out.println();
+          
+	  }
+	  
+	  @FXML
+	  private void ShapeMouseEnded(){
+		  
+	  }
+	  
+	  @FXML
+	  private void ShapeMouseOverPane(MouseEvent t){
+		  
+//		  if (adicionando){
+//			 if (!playground.getChildren().contains(((Shape)(t.getSource())))){
+//				 playground.getChildren().add(((Shape)(t.getSource())));
+//				 
+//			 }
+//		  }
+		  System.out.println("Mouse movendo");
+		 // System.out.println();
+	  }
+	  
 	  EventHandler<MouseEvent> circleOnMouseDraggedEventHandler =
 		        new EventHandler<MouseEvent>() {
 
 		        @Override
 		        public void handle(MouseEvent t) {
-		            //double offsetX = t.getSceneX() - orgSceneX;
-		            //double offsetY = t.getSceneY() - orgSceneY;
-		            //double newTranslateX = orgTranslateX + offsetX;
-		            //double newTranslateY = orgTranslateY + offsetY;
+		            /*double offsetX = t.getSceneX() - orgSceneX;
+		            double offsetY = t.getSceneY() - orgSceneY;
+		            double newTranslateX = orgTranslateX + offsetX;
+		            double newTranslateY = orgTranslateY + offsetY;
 
-		            //((Circle)(t.getSource())).setTranslateX(newTranslateX);
-		            //((Circle)(t.getSource())).setTranslateY(newTranslateY);
-		            ((Circle)(t.getSource())).setLayoutX(t.getSceneX());
-		            ((Circle)(t.getSource())).setLayoutY(t.getSceneY());;
+		            ((Circle)(t.getSource())).setTranslateX(newTranslateX);
+		            ((Circle)(t.getSource())).setTranslateY(newTranslateY);*/
+		            ((Shape)(t.getSource())).setLayoutX(t.getSceneX());
+		            ((Shape)(t.getSource())).setLayoutY(t.getSceneY());
+//		            System.out.println(t.getSceneX());
+//		            System.out.println(t.getSceneY());
 		        }
 		    };
 
 	EventHandler<MouseEvent> circleOnFim = new EventHandler<MouseEvent>(){
 		@Override
         public void handle(MouseEvent t) {
-			System.out.println("Cicle.getLayout()");
-			System.out.println(cicle.getLayoutX());
-	        System.out.println(cicle.getLayoutY());
+			//System.out.println("Cicle.getLayout()");
+			//System.out.println(cicle.getLayoutX());
+	        //System.out.println(cicle.getLayoutY());
 
 	        System.out.println("Mouse ponto");
 			System.out.println(t.getSceneX());
@@ -325,11 +411,13 @@ public class Main extends Application {
 	        System.out.println(patual.y);
 
 	        //aqui onde ocorre realmente a mudanca de posicao
-	        ball.body.setTransform(new Vec2(xpos, ypos),0);
+	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
+	        		
+	        ball.physics.setTransform(new Vec2(xpos, ypos),0);
 	        //zerando a velocidade para a bola n sair quicando como vinha antes
-	        ball.body.setLinearVelocity(new Vec2(0,0));
+	        ball.physics.setLinearVelocity(new Vec2(0,0));
 
-	        Vec2 nova = ball.body.getPosition();
+	        Vec2 nova = ball.physics.getPosition();
 	        System.out.println("Posicao atual");
 	        System.out.println(nova.x);
 	        System.out.println(nova.y);
@@ -338,4 +426,80 @@ public class Main extends Application {
 		}
 
 	};
+	
+	//Eventos das formas que são adicionadas
+	
+	@FXML
+	private void addCirculo(){
+		
+		if (this.world == null)
+		{
+			this.world = new World2(new Vec2(0.0f,-10.0f));
+			Utility.WIDTH = (int)playground.getWidth();
+			Utility.HEIGHT = (int)playground.getHeight();
+		}
+		int index = this.world.CriarCirculo(8, 200, 20, Color.RED);
+		playground.getChildren().add(world.bodys.get(index).shape);
+
+		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
+		world.bodys.get(index).shape.setOnMouseDragged(circleOnMouseDraggedEventHandler);
+		world.bodys.get(index).shape.setOnMouseReleased(circleOnFim);
+		world.bodys.get(index).shape.setUserData(index);
+		
+	}
+	
+	@FXML
+	private void addGround(){
+		
+		if (this.world == null){
+			this.world = new World2(new Vec2(0.0f,-10.0f));
+			Utility.WIDTH = (int)playground.getWidth();
+			Utility.HEIGHT = (int)playground.getHeight();
+		}
+
+		int angulo = 20;
+		int index = 0;
+		//index = this.world.addRampa(0, 300, 400, 10,angulo);
+		//playground.getChildren().add(world.bodys.get(index).shape);
+		index = world.addGround(0, 400, 800, 10);
+		playground.getChildren().add(world.bodys.get(index).shape);
+		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
+		world.bodys.get(index).shape.setOnMouseDragged(circleOnMouseDraggedEventHandler);
+		world.bodys.get(index).shape.setOnMouseReleased(circleOnFim);
+		world.bodys.get(index).shape.setUserData(index);
+		
+		/*
+		index = world.addSensor(0, 400, 600, 1);
+		playground.getChildren().add(world.bodys.get(index).shape);
+		playground.getChildren().add(world.bodys.get(index).imagem);
+		
+
+		index = world.addWall(0, 0, 4, 600);
+		playground.getChildren().add(world.bodys.get(index).shape);
+		index = world.addWall(600, 0, 4, 600);
+		playground.getChildren().add(world.bodys.get(index).shape);*/
+		
+	}
+	
+	@FXML
+	private void addWall(){
+		
+		if (this.world == null){
+			this.world = new World2(new Vec2(0.0f,-10.0f));
+			Utility.WIDTH = (int)playground.getWidth();
+			Utility.HEIGHT = (int)playground.getHeight();
+		}
+
+		int angulo = 20;
+		int index = 0;
+		//index = this.world.addRampa(0, 300, 400, 10,angulo);
+		//playground.getChildren().add(world.bodys.get(index).shape);
+		index = world.addWall(100, 00, 8, 600);
+		playground.getChildren().add(world.bodys.get(index).shape);
+		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
+		world.bodys.get(index).shape.setOnMouseDragged(circleOnMouseDraggedEventHandler);
+		world.bodys.get(index).shape.setOnMouseReleased(circleOnFim);
+		world.bodys.get(index).shape.setUserData(index);
+		
+	}
 }

@@ -21,6 +21,9 @@ public class Utility {
     //Largura e altura da tela
     public static int WIDTH = 600;
     public static int HEIGHT = 600;
+    
+    public static int WIDTH_TOTAL = 600;
+    public static int HEIGHT_TOTAL = 600;
 
     //Raio das bolas em pixels
     public static final int BALL_RADIUS = 8;
@@ -127,9 +130,11 @@ public class Utility {
     
     public static void CalcularTela(){
     	
-    	WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-    	HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
+    	WIDTH_TOTAL = Toolkit.getDefaultToolkit().getScreenSize().width;
+    	HEIGHT_TOTAL = Toolkit.getDefaultToolkit().getScreenSize().height;
 
+    	WIDTH = (int) (WIDTH_TOTAL*0.8);
+    	HEIGHT = (int)(HEIGHT_TOTAL*0.8);
     	/* Para vários monitores
     	 * GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		int width = gd.getDisplayMode().getWidth();

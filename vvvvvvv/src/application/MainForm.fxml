@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.shape.*?>
 <?import java.lang.*?>
@@ -22,16 +23,29 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <SplitPane dividerPositions="0.6640926640926641" prefHeight="472.0" prefWidth="520.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane fx:id="split_toolbox_playground" dividerPositions="0.6640926640926641" prefHeight="472.0" prefWidth="520.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane fx:id="pane" minHeight="0.0" minWidth="0.0" prefHeight="589.0" prefWidth="403.0" />
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="448.0" prefWidth="222.0">
+                      <AnchorPane fx:id="playground" minHeight="0.0" minWidth="0.0" onMouseEntered="#ShapeMouseOverPane" prefHeight="589.0" prefWidth="403.0" />
+                      <AnchorPane fx:id="toolbox" minHeight="0.0" minWidth="0.0" prefHeight="448.0" prefWidth="222.0">
                            <children>
                               <Button layoutX="19.0" layoutY="18.0" mnemonicParsing="false" onAction="#sayhello" text="Colcoar" />
                               <Button layoutX="20.0" layoutY="51.0" mnemonicParsing="false" onAction="#moverBola" text="Mover" />
                               <Button layoutX="91.0" layoutY="18.0" mnemonicParsing="false" onAction="#addRampa" text="Rampa" />
                               <Button layoutX="83.0" layoutY="61.0" mnemonicParsing="false" onAction="#starttime" text="Iniciar" />
                               <Label fx:id="lab" layoutX="36.0" layoutY="91.0" text="Label" />
+                              <Circle id="bola" fx:id="circle2" layoutX="36.0" layoutY="157.0" onMouseClicked="#addCirculo" radius="22.0" stroke="BLACK" strokeType="INSIDE">
+                                 <fill>
+                                    <LinearGradient endX="0.3942307692307693" endY="0.6634615384615384">
+                                       <stops>
+                                          <Stop color="#1d89ee" />
+                                          <Stop color="WHITE" offset="1.0" />
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill></Circle>
+                              <Rectangle id="quadrado" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="44.0" layoutX="76.0" layoutY="135.0" stroke="BLACK" strokeType="INSIDE" width="44.0" />
+                              <Rectangle id="parede" arcHeight="5.0" arcWidth="5.0" fill="#868686" height="138.0" layoutX="27.0" layoutY="203.0" onMouseClicked="#addWall" stroke="BLACK" strokeType="INSIDE" width="18.0" />
+                              <Rectangle id="rampa" arcHeight="5.0" arcWidth="5.0" fill="#6b6b6b" height="17.0" layoutX="57.0" layoutY="252.0" rotate="37.9" stroke="BLACK" strokeType="INSIDE" width="127.0" />
+                              <Rectangle id="chao" arcHeight="5.0" arcWidth="5.0" fill="#909090" height="17.0" layoutX="50.0" layoutY="318.0" onMouseClicked="#addGround" stroke="BLACK" strokeType="INSIDE" width="140.0" />
                            </children>
                         </AnchorPane>
                     </items>
