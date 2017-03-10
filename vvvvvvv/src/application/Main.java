@@ -54,6 +54,9 @@ public class Main extends Application {
 	
 	@FXML
 	private SplitPane split_toolbox_playground; 
+	
+	@FXML
+	private AnchorPane paineltop;
 
 	@FXML
 	private Label lab;
@@ -225,30 +228,7 @@ public class Main extends Application {
 
 	}
 
-	@FXML
-	private void addRampa(){
 
-		if (this.world == null)
-			this.world = new World2(new Vec2(0.0f,-10.0f));
-
-		int angulo = 20;
-		int index = 0;
-		//index = this.world.addRampa(0, 300, 400, 10,angulo);
-		//playground.getChildren().add(world.bodys.get(index).shape);
-		
-		index = world.addSensor(0, 400, 600, 1);
-		playground.getChildren().add(world.bodys.get(index).shape);
-		playground.getChildren().add(world.bodys.get(index).imagem);
-		world.addGround(200, 15);
-
-		index = world.addWall(0, 0, 4, 600);
-		playground.getChildren().add(world.bodys.get(index).shape);
-		index = world.addWall(600, 0, 4, 600);
-		playground.getChildren().add(world.bodys.get(index).shape);
-
-
-
-	}
 	@FXML
 	private void starttime(){
 		System.out.println("Tamanho do Painel de simulação");
@@ -360,6 +340,9 @@ public class Main extends Application {
 //			 }
 //		  }
 		  System.out.println("Mouse movendo");
+		  System.out.println(t.getSceneX());
+		  System.out.println(t.getSceneY());
+		  System.out.println(t.getY());
 		 // System.out.println();
 	  }
 	  
@@ -372,13 +355,12 @@ public class Main extends Application {
 		            double offsetY = t.getSceneY() - orgSceneY;
 		            double newTranslateX = orgTranslateX + offsetX;
 		            double newTranslateY = orgTranslateY + offsetY;
-
+					
 		            ((Circle)(t.getSource())).setTranslateX(newTranslateX);
 		            ((Circle)(t.getSource())).setTranslateY(newTranslateY);*/
 		            ((Shape)(t.getSource())).setLayoutX(t.getSceneX());
-		            ((Shape)(t.getSource())).setLayoutY(t.getSceneY());
-//		            System.out.println(t.getSceneX());
-//		            System.out.println(t.getSceneY());
+		            ((Shape)(t.getSource())).setLayoutY(t.getSceneY()-paineltop.getHeight());
+
 		        }
 		    };
 
@@ -401,7 +383,7 @@ public class Main extends Application {
         	//ball.body.createFixture(ball.fd);
         	//ball.node.setUserData(ball.body);
 	        float xpos = Utility.toPosX((float)t.getSceneX());
-            float ypos = Utility.toPosY((float)t.getSceneY());
+            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
             System.out.println("Posicao calculada");
             System.out.println(xpos);
 	        System.out.println(ypos);
@@ -413,7 +395,8 @@ public class Main extends Application {
 	        //aqui onde ocorre realmente a mudanca de posicao
 	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
 	        		
-	        ball.physics.setTransform(new Vec2(xpos, ypos),0);
+	        ball.physics.setTransform(new Vec2(xpos+ball.physics_width, ypos-ball.physics_height),0);
+	        
 	        //zerando a velocidade para a bola n sair quicando como vinha antes
 	        ball.physics.setLinearVelocity(new Vec2(0,0));
 
@@ -426,7 +409,47 @@ public class Main extends Application {
 		}
 
 	};
-	
+	EventHandler<MouseEvent> RampaOnFim = new EventHandler<MouseEvent>(){
+		@Override
+        public void handle(MouseEvent t) {
+			//System.out.println("Cicle.getLayout()");
+			//System.out.println(cicle.getLayoutX());
+	        //System.out.println(cicle.getLayoutY());
+
+	        System.out.println("Mouse ponto");
+			System.out.println(t.getSceneX());
+	        System.out.println(t.getSceneY());
+
+	        float xpos = Utility.toPosX((float)t.getSceneX());
+            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
+            System.out.println("Posicao calculada");
+            System.out.println(xpos);
+	        System.out.println(ypos);
+	        Vec2 patual = ball.body.getPosition();
+	        System.out.println("Posicao bola");
+	        System.out.println(patual.x);
+	        System.out.println(patual.y);
+
+	        //aqui onde ocorre realmente a mudanca de posicao
+	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
+	        
+	        //float theta = ba
+	        		
+	        //ball.physics.setTransform(new Vec2(xpos+ball.physics_width, ypos-ball.physics_height),0);
+	        Vec2 novaposicao = ball.getCenterPosition(xpos, ypos);
+	        ball.physics.setTransform(new Vec2(novaposicao.x, novaposicao.y),0);
+	        //zerando a velocidade para a bola n sair quicando como vinha antes
+	        ball.physics.setLinearVelocity(new Vec2(0,0));
+
+	        Vec2 nova = ball.physics.getPosition();
+	        System.out.println("Posicao atual");
+	        System.out.println(nova.x);
+	        System.out.println(nova.y);
+	        //pare = true;
+	        timeline.playFromStart();
+		}
+
+	};
 	//Eventos das formas que são adicionadas
 	
 	@FXML
@@ -501,5 +524,37 @@ public class Main extends Application {
 		world.bodys.get(index).shape.setOnMouseReleased(circleOnFim);
 		world.bodys.get(index).shape.setUserData(index);
 		
+	}
+	
+	@FXML
+	private void addRampa(){
+
+		if (this.world == null){
+			this.world = new World2(new Vec2(0.0f,-10.0f));
+			Utility.WIDTH = (int)playground.getWidth();
+			Utility.HEIGHT = (int)playground.getHeight();
+		}
+
+		int angulo = 20;
+		int index = 0;
+		index = this.world.addRampa(10, 300, 700, 10,angulo);
+		playground.getChildren().add(world.bodys.get(index).shape);
+		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
+		world.bodys.get(index).shape.setOnMouseDragged(circleOnMouseDraggedEventHandler);
+		world.bodys.get(index).shape.setOnMouseReleased(RampaOnFim);
+		world.bodys.get(index).shape.setUserData(index);
+		
+//		index = world.addSensor(0, 400, 600, 1);
+//		playground.getChildren().add(world.bodys.get(index).shape);
+//		playground.getChildren().add(world.bodys.get(index).imagem);
+//		world.addGround(200, 15);
+//
+//		index = world.addWall(0, 0, 4, 600);
+//		playground.getChildren().add(world.bodys.get(index).shape);
+//		index = world.addWall(600, 0, 4, 600);
+//		playground.getChildren().add(world.bodys.get(index).shape);
+
+
+
 	}
 }
