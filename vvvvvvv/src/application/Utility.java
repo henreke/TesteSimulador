@@ -21,12 +21,15 @@ public class Utility {
     //Largura e altura da tela
     public static int WIDTH = 600;
     public static int HEIGHT = 600;
-    
+
     public static int WIDTH_TOTAL = 600;
     public static int HEIGHT_TOTAL = 600;
 
     //Raio das bolas em pixels
     public static final int BALL_RADIUS = 8;
+
+    //Tamanho do mundo
+    public static final float TAMANHO_REAL = 100f;
 
     //Metodo adiciona o chao
     public static void addGround(float width, float height){
@@ -82,54 +85,54 @@ public class Utility {
 
     //Converte uma coordenada em pixel
     public static float toPixelPosX(float posX){
-        float x = WIDTH*posX/100.0f;
+        float x = WIDTH*posX/TAMANHO_REAL;
         return x;
     }
     //converte um coordenada em pixel para uma coordenada no jbox
     public static float toPosX(float posX){
-        float x = (posX*100.0f*1.0f)/WIDTH;
+        float x = (posX*TAMANHO_REAL*1.0f)/WIDTH;
         return x;
     }
 
     //Convert a JBox2D y coordinate to a JavaFX pixel y coordinate
     public static float toPixelPosY(float posY) {
-        float y = HEIGHT - (1.0f*HEIGHT) * posY / 100.0f;
+        float y = HEIGHT - (1.0f*HEIGHT) * posY / TAMANHO_REAL;
         return y;
     }
 
     //Convert a JavaFX pixel y coordinate to a JBox2D y coordinate
     public static float toPosY(float posY) {
-        float y = 100.0f - ((posY * 100*1.0f) /HEIGHT) ;
+        float y = TAMANHO_REAL - ((posY * TAMANHO_REAL*1.0f) /HEIGHT) ;
         return y;
     }
 
     //Convert a JBox2D width to pixel width
     public static float toPixelWidth(float width) {
-        return WIDTH*width / 100.0f;
+        return WIDTH*width / TAMANHO_REAL;
     }
 
     //Convert a JBox2D height to pixel height
     public static float toPixelHeight(float height) {
-        return HEIGHT*height/100.0f;
+        return HEIGHT*height/TAMANHO_REAL;
     }
     //converte pixel height to jbox2d height
     public static float toHeight(float height){
-    	return height*100.0f/HEIGHT;
+    	return height*TAMANHO_REAL/HEIGHT;
     }
 
     //converte pixel width to jbox2d height
     public static float toWidth(float width){
-    	return width*100f/WIDTH;
+    	return width*TAMANHO_REAL/WIDTH;
     }
     public static float tograus(float rad){
-    	return (float) (rad*180/Math.PI);
+    	return (float) (Math.toDegrees(rad));
     }
     public static float torad(float deg){
-    	return (float) (deg*Math.PI/180);
+    	return (float) (Math.toRadians(deg));
     }
-    
+
     public static void CalcularTela(){
-    	
+
     	WIDTH_TOTAL = Toolkit.getDefaultToolkit().getScreenSize().width;
     	HEIGHT_TOTAL = Toolkit.getDefaultToolkit().getScreenSize().height;
 
@@ -140,7 +143,7 @@ public class Utility {
 		int width = gd.getDisplayMode().getWidth();
 		int height = gd.getDisplayMode().getHeight();
     	 * */
-    	
+
     }
 }
 

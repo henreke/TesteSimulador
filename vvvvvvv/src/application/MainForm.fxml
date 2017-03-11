@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.paint.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.shape.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="653.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
+<AnchorPane prefHeight="653.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
    <children>
       <SplitPane dividerPositions="0.09523809523809523" orientation="VERTICAL" prefHeight="653.0" prefWidth="596.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -42,7 +41,7 @@
                                        </stops>
                                     </LinearGradient>
                                  </fill></Circle>
-                              <Rectangle id="quadrado" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="44.0" layoutX="76.0" layoutY="135.0" stroke="BLACK" strokeType="INSIDE" width="44.0" />
+                              <Rectangle id="quadrado" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="44.0" layoutX="76.0" layoutY="135.0" onMouseClicked="#addQuadrado" stroke="BLACK" strokeType="INSIDE" width="44.0" />
                               <Rectangle id="parede" arcHeight="5.0" arcWidth="5.0" fill="#868686" height="138.0" layoutX="27.0" layoutY="203.0" onMouseClicked="#addWall" stroke="BLACK" strokeType="INSIDE" width="18.0" />
                               <Rectangle id="rampa" arcHeight="5.0" arcWidth="5.0" fill="#6b6b6b" height="17.0" layoutX="57.0" layoutY="252.0" onMouseClicked="#addRampa" rotate="37.9" stroke="BLACK" strokeType="INSIDE" width="127.0" />
                               <Rectangle id="chao" arcHeight="5.0" arcWidth="5.0" fill="#909090" height="17.0" layoutX="50.0" layoutY="318.0" onMouseClicked="#addGround" stroke="BLACK" strokeType="INSIDE" width="140.0" />

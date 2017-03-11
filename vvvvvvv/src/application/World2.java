@@ -17,6 +17,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
+import javafx.geometry.Point3D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -60,17 +61,18 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        Vec2 nova = body.physics.getPosition();
 	        if (nova.x < -20)
 	        {
-	        	this.destroyBody(body.physics);
-	        	this.bodys.remove(body);
+	        	//this.destroyBody(body.physics);
+	        	//this.bodys.remove(body);
 	        }
 	        else{
 
 	        	if (!body.fixo){
 	        		body.shape.setRotate(Utility.tograus(-angulo));
-	        		body.shape.setLayoutX(Utility.toPixelPosX(nova.x));
-		        	body.shape.setLayoutY(Utility.toPixelPosY(nova.y));
-		        	
-		        	
+	        		body.shape.setLayoutX(Utility.toPixelPosX(nova.x)-(float)((Rectangle)body.shape).getWidth()/2);
+	        		//body.shape.setLayoutX(300);
+		        	body.shape.setLayoutY(Utility.toPixelPosY(nova.y)-(float)((Rectangle)body.shape).getHeight()/2);
+
+
 	        	}
 	        	//System.out.println(body.physics.m_linearVelocity.y);
 	        	//System.out.println(body.shape.get);
@@ -102,7 +104,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 		//criar a defini��o da bola visual
 		Circle ball = new Circle();
-        ball.setRadius(Utility.toPixelHeight(raio));
+        ball.setRadius(Utility.toPixelWidth(raio));
         ball.setLayoutX(pixelX);
         ball.setLayoutY(pixelY);
         ball.setFill(cor);
@@ -137,6 +139,52 @@ public class World2 extends org.jbox2d.dynamics.World{
         return bodys.indexOf(body);
 	}
 
+	public int CriarQuadrado(float width, float height,int posX, int posY,Color cor){
+
+		/// Todos os par�metros passados ser�o em  pixels.
+
+		 	PolygonShape ps = new PolygonShape();
+	        ps.setAsBox(Utility.toWidth(width/2), Utility.toHeight(height/2));
+
+	        FixtureDef fd = new FixtureDef();
+	        fd.shape = ps;
+	        fd.density = 1.0f;
+	        fd.friction = 0.3f;
+	        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+	        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
+
+	        BodyDef bd = new BodyDef();
+	        bd.type = BodyType.DYNAMIC;
+	        bd.allowSleep = false;
+	        float x = (Utility.toPosX(posX+width/2));
+	    	float y =  Utility.toPosY(posY+height/2);
+	        bd.position.set(x,y);
+
+
+
+
+	      //Forma Parede
+	        Rectangle parede = new Rectangle(width, height);
+			parede.setLayoutX(posX);
+			parede.setLayoutY(posY);
+
+
+			Body3 body = new Body3();
+
+	        body.physics = this.createBody(bd); //aqui ta diferente do tutorial
+	        body.physics.createFixture(fd);
+	        body.physics.setUserData(body);
+
+	        body.shape = parede;
+
+	        body.physics_width = Utility.toWidth(width/2);
+	        body.physics_height = Utility.toHeight(height/2);
+
+	        bodys.add(body);
+	        //world.createBody(bd).createShape(sd);;
+			return bodys.indexOf(body);
+	}
+
 	 public  void addGround(float width, float height){
 	        PolygonShape ps = new PolygonShape();
 	        ps.setAsBox(width, height);
@@ -164,10 +212,10 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        float x = Utility.toPosX(posX)+Utility.toWidth(width/2);
 	    	float y =  Utility.toPosY(posY);
 	        bd.position.set(x,y);
-	       
 
-	        
-	        
+
+
+
 	      //Forma Parede
 	        Rectangle parede = new Rectangle(width, height);
 			parede.setLayoutX(posX);
@@ -175,17 +223,17 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 
 			Body3 body = new Body3();
-	        
+
 	        body.physics = this.createBody(bd); //aqui ta diferente do tutorial
 	        body.physics.createFixture(fd);
 	        body.physics.setUserData(body);
-	        
+
 	        body.shape = parede;
 	        body.fixo = true;
-	        
+
 	        body.physics_width = Utility.toWidth(width/2);
 	        body.physics_height = Utility.toHeight(height/2);
-	        
+
 	        bodys.add(body);
 	        //world.createBody(bd).createShape(sd);;
 			return bodys.indexOf(body);
@@ -196,7 +244,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	    public  int addWall(float posX, float posY,float width,float height){
 
 	        PolygonShape ps = new PolygonShape();
-	        ps.setAsBox(Utility.toWidth(width/2), Utility.toHeight(height/2));
+	        ps.setAsBox(Utility.toWidth(width/2), Utility.toHeight(height));
 
 	        FixtureDef fd = new FixtureDef();
 	        fd.shape = ps;
@@ -217,8 +265,8 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        fd2.isSensor = true;
 	        fd2.filter.categoryBits = Body3.ContactType.BODYS.tipo();
 	        fd2.filter.maskBits = Body3.ContactType.BODYS.tipo();
-	        
-	        
+
+
 	      //Forma Parede
 	        Rectangle parede = new Rectangle(width, height);
 			parede.setLayoutX(posX);
@@ -226,18 +274,18 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 
 			Body3 body = new Body3();
-	        
+
 	        body.physics = this.createBody(bd); //aqui ta diferente do tutorial
 	        body.physics.createFixture(fd);
 	        body.physics.createFixture(fd2);
 	        body.physics.setUserData(body);
-	        
+
 	        body.shape = parede;
 	        body.fixo = true;
-	        
+
 	        body.physics_width = Utility.toWidth(width/2);
 	        body.physics_height = Utility.toHeight(height/2);
-	        
+
 	        bodys.add(body);
 	        //world.createBody(bd).createShape(sd);;
 			return bodys.indexOf(body);
@@ -257,44 +305,54 @@ public class World2 extends org.jbox2d.dynamics.World{
         fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
         fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
     	BodyDef bd = new BodyDef();
-    	float x = (Utility.toPosX(PosX)+Utility.toWidth(width/2));
-    	float y =  Utility.toPosY(PosY);
+    	float x = (Utility.toPosX(PosX+width/2));
+    	float y =  Utility.toPosY(PosY+height/2);
         bd.position.set(x, y);
         if (rotation != 0f) { bd.angle = Utility.torad(rotation); }
-        
-        
+
+
 
         Body3 body = new Body3();
 
         body.physics = this.createBody(bd);
         body.physics.createFixture(fd);
 
-        
+
 
 		//Forma
         Rectangle rampa = new Rectangle(width, height);
-        
+
 		rampa.setLayoutX(PosX);
 		rampa.setLayoutY(PosY);
-		//rampa.getTransforms().add(new Rotate(-rotation,0,0,0));
-		rampa.setRotate(-rotation);
+		rampa.setRotate(-rotation-0.27);
+		//rampa.getTransforms().add(new Rotate(-rotation, width/2,height/2,0));
+
+		System.out.println("Meio do bixo");
+
+		System.out.println(PosX+ width/2);
+		System.out.println(Utility.toPixelPosX(body.physics.getPosition().x));
+		System.out.println(PosY+height/2);
+		System.out.println( Utility.toPixelPosY(body.physics.getPosition().y));
+		//rampa.setRotationAxis(new Point3D(Utility.toPixelPosX(bd.position.x),Utility.toPixelPosY(bd.position.y),0));
+		//rampa.rotationAxisProperty();
+
 
 		body.shape = rampa;
 		body.fixo = true;
 		body.physics.setUserData(body);
-		
+
 		body.physics_width = Utility.toWidth(width/2);
         body.physics_height = Utility.toHeight(height/2);
         body.physics_angle = bd.angle;
-        
-       
-        
+
+
+
 		bodys.add(body);
         //world.createBody(bd).createShape(sd);;
 		return bodys.indexOf(body);
     }
-    
-    
+
+
     public  int addSensor(float posX, float posY,float width,float height){
 
         PolygonShape ps = new PolygonShape();
@@ -314,8 +372,8 @@ public class World2 extends org.jbox2d.dynamics.World{
         fd2.isSensor = true;
         fd2.filter.categoryBits = Body3.ContactType.BODYS.tipo();
         fd2.filter.maskBits = Body3.ContactType.BODYS.tipo();
-        
-        
+
+
       //Forma Parede
        Rectangle parede = new Rectangle(width, height);
 		parede.setLayoutX(posX);
@@ -330,17 +388,17 @@ public class World2 extends org.jbox2d.dynamics.World{
         iv.setPreserveRatio(true);
         iv.setSmooth(true);
         iv.setCache(true);
-        
+
         iv.setLayoutX(posX);
         iv.setLayoutY(posY);
 
 		Body3 body = new Body3();
 
-        
+
         body.physics = this.createBody(bd); //aqui ta diferente do tutorial
         body.physics.createFixture(fd2);
         body.physics.setUserData(body);
-        
+
         body.imagem = iv;
         body.shape = parede;
         body.fixo = true;
@@ -354,17 +412,22 @@ class Body3{
 
 	public Body physics;
 	public Shape shape;
-	public ImageView  imagem; 
+	public ImageView  imagem;
 	public boolean fixo = false;
 	public String nome = "";
 	public float physics_width = 0;
 	public float physics_height = 0;
 	public float physics_angle = 0;
-	
+	public float pcx_inicial = 0;
+	public float pcy_inicial = 0;
+	public float pvx_inicial = 0;
+	public float pvy_inicial = 0;
+
 	public float getCosAngle(){
 		return (float) Math.cos(physics_angle);
 	}
 	public float getAngleGama(){
+		System.out.println(Math.atan(physics_width/physics_height));
 		return (float) Math.atan(physics_width/physics_height);
 	}
 	public float getDiagonal(){
@@ -376,14 +439,34 @@ class Body3{
 	public Vec2 getCenterPosition(float Pvx,float Pvy){
 		float theta = getAngleTheta();
 		float diagonal = getDiagonal();
-		float x = (float) (Pvx-Math.cos(theta)*diagonal);
-		float y = (float) (Pvy-Math.sin(theta)*diagonal);
+		float x = (float) (Pvx+Math.cos(theta)*diagonal);
+		float y = (float) (Pvy+Math.sin(theta)*diagonal);
 		return new Vec2( x, y);
+	}
+	public void setPosicaoCentroInicial(float px, float py){
+		pcx_inicial = px;
+		pcy_inicial = py;
+	}
+	public void GuardarPosicaoCentroInicial(){
+		pcx_inicial = physics.getPosition().x;
+		pcy_inicial = physics.getPosition().y;
+	}
+	public void setPosicaoVerticeInicial(float px, float py){
+		pvx_inicial = px;
+		pvy_inicial = py;
+	}
+	public void GuardarPosicaoVerticeInicial(){
+		pvx_inicial = Utility.toPosX((float) shape.getLayoutX());
+		pvy_inicial = Utility.toPosY((float) shape.getLayoutY());
+	}
+
+	public Vec2 CalcularDeltaPosicao(float px,float py){
+		return new Vec2(px-pvx_inicial,py-pvy_inicial);
 	}
 	public static enum ContactType{
 		BODYS (0x0002),
 		SENSOR (0x0004);
-		
+
 		private final int tipo;
 		ContactType(int tipo){
 			this.tipo = tipo;
@@ -420,7 +503,7 @@ class Contato implements ContactListener{
 			System.out.print("Posicao ");
 			System.out.println(body.physics.getPosition().y);
 		}
-		
+
 		body = (Body3)fixtureA.getBody().getUserData();
 
 
