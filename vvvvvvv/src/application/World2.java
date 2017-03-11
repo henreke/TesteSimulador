@@ -68,9 +68,9 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 	        	if (!body.fixo){
 	        		body.shape.setRotate(Utility.tograus(-angulo));
-	        		body.shape.setLayoutX(Utility.toPixelPosX(nova.x)-(float)((Rectangle)body.shape).getWidth()/2);
+	        		body.shape.setLayoutX(Utility.toPixelPosX(nova.x)-(float)(body.shape_width/2));
 	        		//body.shape.setLayoutX(300);
-		        	body.shape.setLayoutY(Utility.toPixelPosY(nova.y)-(float)((Rectangle)body.shape).getHeight()/2);
+		        	body.shape.setLayoutY(Utility.toPixelPosY(nova.y)-(float)(body.shape_height/2));
 
 
 	        	}
@@ -133,6 +133,8 @@ public class World2 extends org.jbox2d.dynamics.World{
         body.physics.createFixture(fd);
 
         body.physics.setUserData(body);
+        body.shape_height = raio;
+        body.shape_width = raio;
         bodys.add(body);
         Contato contato = new Contato();
         this.setContactListener(contato);
@@ -179,7 +181,8 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 	        body.physics_width = Utility.toWidth(width/2);
 	        body.physics_height = Utility.toHeight(height/2);
-
+	        body.shape_height = height;
+	        body.shape_width = width;
 	        bodys.add(body);
 	        //world.createBody(bd).createShape(sd);;
 			return bodys.indexOf(body);
@@ -233,7 +236,8 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 	        body.physics_width = Utility.toWidth(width/2);
 	        body.physics_height = Utility.toHeight(height/2);
-
+	        body.shape_height = height;
+	        body.shape_width = width;
 	        bodys.add(body);
 	        //world.createBody(bd).createShape(sd);;
 			return bodys.indexOf(body);
@@ -285,7 +289,8 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 	        body.physics_width = Utility.toWidth(width/2);
 	        body.physics_height = Utility.toHeight(height/2);
-
+	        body.shape_height = height;
+	        body.shape_width = width;
 	        bodys.add(body);
 	        //world.createBody(bd).createShape(sd);;
 			return bodys.indexOf(body);
@@ -345,7 +350,8 @@ public class World2 extends org.jbox2d.dynamics.World{
         body.physics_height = Utility.toHeight(height/2);
         body.physics_angle = bd.angle;
 
-
+        body.shape_height = height;
+        body.shape_width = width;
 
 		bodys.add(body);
         //world.createBody(bd).createShape(sd);;
@@ -402,6 +408,8 @@ public class World2 extends org.jbox2d.dynamics.World{
         body.imagem = iv;
         body.shape = parede;
         body.fixo = true;
+        body.shape_height = height;
+        body.shape_width = width;
         bodys.add(body);
         //world.createBody(bd).createShape(sd);;
 		return bodys.indexOf(body);
@@ -422,6 +430,8 @@ class Body3{
 	public float pcy_inicial = 0;
 	public float pvx_inicial = 0;
 	public float pvy_inicial = 0;
+	public float shape_width = 0;
+	public float shape_height = 0;
 
 	public float getCosAngle(){
 		return (float) Math.cos(physics_angle);

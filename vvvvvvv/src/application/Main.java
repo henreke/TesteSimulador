@@ -571,6 +571,7 @@ public class Main extends Application {
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 			Utility.WIDTH = (int)playground.getWidth();
 			Utility.HEIGHT = (int)playground.getHeight();
+			Utility.TAMANHO_REAL_ALTURA = ((Utility.HEIGHT*1.0f)/Utility.WIDTH)*Utility.TAMANHO_REAL_LARGURA;
 		}
 
 		int angulo = 20;

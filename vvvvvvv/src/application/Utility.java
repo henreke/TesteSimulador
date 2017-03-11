@@ -29,7 +29,8 @@ public class Utility {
     public static final int BALL_RADIUS = 8;
 
     //Tamanho do mundo
-    public static final float TAMANHO_REAL = 100f;
+    public static float TAMANHO_REAL_LARGURA = 100f;
+    public static float TAMANHO_REAL_ALTURA = 100f;
 
     //Metodo adiciona o chao
     public static void addGround(float width, float height){
@@ -85,44 +86,44 @@ public class Utility {
 
     //Converte uma coordenada em pixel
     public static float toPixelPosX(float posX){
-        float x = WIDTH*posX/TAMANHO_REAL;
+        float x = WIDTH*posX/TAMANHO_REAL_LARGURA;
         return x;
     }
     //converte um coordenada em pixel para uma coordenada no jbox
     public static float toPosX(float posX){
-        float x = (posX*TAMANHO_REAL*1.0f)/WIDTH;
+        float x = (posX*TAMANHO_REAL_LARGURA*1.0f)/WIDTH;
         return x;
     }
 
     //Convert a JBox2D y coordinate to a JavaFX pixel y coordinate
     public static float toPixelPosY(float posY) {
-        float y = HEIGHT - (1.0f*HEIGHT) * posY / TAMANHO_REAL;
+        float y = HEIGHT - (1.0f*HEIGHT) * posY / TAMANHO_REAL_ALTURA;
         return y;
     }
 
     //Convert a JavaFX pixel y coordinate to a JBox2D y coordinate
     public static float toPosY(float posY) {
-        float y = TAMANHO_REAL - ((posY * TAMANHO_REAL*1.0f) /HEIGHT) ;
+        float y = TAMANHO_REAL_ALTURA - ((posY * TAMANHO_REAL_ALTURA*1.0f) /HEIGHT) ;
         return y;
     }
 
     //Convert a JBox2D width to pixel width
     public static float toPixelWidth(float width) {
-        return WIDTH*width / TAMANHO_REAL;
+        return WIDTH*width / TAMANHO_REAL_LARGURA;
     }
 
     //Convert a JBox2D height to pixel height
     public static float toPixelHeight(float height) {
-        return HEIGHT*height/TAMANHO_REAL;
+        return HEIGHT*height/TAMANHO_REAL_ALTURA;
     }
     //converte pixel height to jbox2d height
     public static float toHeight(float height){
-    	return height*TAMANHO_REAL/HEIGHT;
+    	return height*TAMANHO_REAL_ALTURA/HEIGHT;
     }
 
     //converte pixel width to jbox2d height
     public static float toWidth(float width){
-    	return width*TAMANHO_REAL/WIDTH;
+    	return width*TAMANHO_REAL_LARGURA/WIDTH;
     }
     public static float tograus(float rad){
     	return (float) (Math.toDegrees(rad));
