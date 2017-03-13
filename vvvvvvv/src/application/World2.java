@@ -18,6 +18,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import javafx.geometry.Point3D;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -165,7 +167,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 
 
-	      //Forma Parede
+	      //Forma do quadrado
 	        Rectangle parede = new Rectangle(width, height);
 			parede.setLayoutX(posX);
 			parede.setLayoutY(posY);
@@ -212,8 +214,8 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
 	        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
 	        BodyDef bd = new BodyDef();
-	        float x = Utility.toPosX(posX)+Utility.toWidth(width/2);
-	    	float y =  Utility.toPosY(posY);
+	        float x = (Utility.toPosX(posX+width/2));
+	    	float y =  Utility.toPosY(posY+height/2);
 	        bd.position.set(x,y);
 
 
@@ -222,7 +224,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	      //Forma Parede
 	        Rectangle parede = new Rectangle(width, height);
 			parede.setLayoutX(posX);
-			parede.setLayoutY(posY-parede.getHeight());
+			parede.setLayoutY(posY);
 
 
 			Body3 body = new Body3();
@@ -248,7 +250,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	    public  int addWall(float posX, float posY,float width,float height){
 
 	        PolygonShape ps = new PolygonShape();
-	        ps.setAsBox(Utility.toWidth(width/2), Utility.toHeight(height));
+	        ps.setAsBox(Utility.toWidth(width/2), Utility.toHeight(height/2));
 
 	        FixtureDef fd = new FixtureDef();
 	        fd.shape = ps;
@@ -257,18 +259,18 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
 	        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
 	        BodyDef bd = new BodyDef();
-	        float x = Utility.toPosX(posX);
-	    	float y =  Utility.toPosY(posY);
+	        float x = (Utility.toPosX(posX+width/2));
+	    	float y =  Utility.toPosY(posY+height/2);
 	        bd.position.set(x,y);
 
 	        //Teste sensor
-	        PolygonShape ps2 = new PolygonShape();
-	        ps2.setAsBox(width+10, height);
-	        FixtureDef fd2 = new FixtureDef();
-	        fd2.shape = ps2;
-	        fd2.isSensor = true;
-	        fd2.filter.categoryBits = Body3.ContactType.BODYS.tipo();
-	        fd2.filter.maskBits = Body3.ContactType.BODYS.tipo();
+//	        PolygonShape ps2 = new PolygonShape();
+//	        ps2.setAsBox(width+10, height);
+//	        FixtureDef fd2 = new FixtureDef();
+//	        fd2.shape = ps2;
+//	        fd2.isSensor = true;
+//	        fd2.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+//	        fd2.filter.maskBits = Body3.ContactType.BODYS.tipo();
 
 
 	      //Forma Parede
@@ -281,7 +283,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 	        body.physics = this.createBody(bd); //aqui ta diferente do tutorial
 	        body.physics.createFixture(fd);
-	        body.physics.createFixture(fd2);
+	       // body.physics.createFixture(fd2);
 	        body.physics.setUserData(body);
 
 	        body.shape = parede;
@@ -432,6 +434,7 @@ class Body3{
 	public float pvy_inicial = 0;
 	public float shape_width = 0;
 	public float shape_height = 0;
+	public  XYChart.Series pontos_grafico = new Series();
 
 	public float getCosAngle(){
 		return (float) Math.cos(physics_angle);

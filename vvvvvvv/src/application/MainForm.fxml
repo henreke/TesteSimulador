@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
@@ -9,7 +15,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="653.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
+<AnchorPane prefHeight="653.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
    <children>
       <SplitPane dividerPositions="0.09523809523809523" orientation="VERTICAL" prefHeight="653.0" prefWidth="596.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -27,24 +33,77 @@
                       <AnchorPane fx:id="playground" minHeight="0.0" minWidth="0.0" onMouseMoved="#ShapeMouseOverPane" prefHeight="589.0" prefWidth="403.0" />
                       <AnchorPane fx:id="toolbox" minHeight="0.0" minWidth="0.0" prefHeight="448.0" prefWidth="222.0">
                            <children>
-                              <Button layoutX="19.0" layoutY="18.0" mnemonicParsing="false" onAction="#sayhello" text="Colcoar" />
-                              <Button layoutX="20.0" layoutY="51.0" mnemonicParsing="false" onAction="#moverBola" text="Mover" />
-                              <Button layoutX="91.0" layoutY="18.0" mnemonicParsing="false" onAction="#addRampa" text="Rampa" />
-                              <Button layoutX="83.0" layoutY="61.0" mnemonicParsing="false" onAction="#starttime" text="Iniciar" />
-                              <Label fx:id="lab" layoutX="36.0" layoutY="91.0" text="Label" />
-                              <Circle id="bola" fx:id="circle2" layoutX="36.0" layoutY="157.0" onMouseClicked="#addCirculo" radius="22.0" stroke="BLACK" strokeType="INSIDE">
-                                 <fill>
-                                    <LinearGradient endX="0.3942307692307693" endY="0.6634615384615384">
-                                       <stops>
-                                          <Stop color="#1d89ee" />
-                                          <Stop color="WHITE" offset="1.0" />
-                                       </stops>
-                                    </LinearGradient>
-                                 </fill></Circle>
-                              <Rectangle id="quadrado" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="44.0" layoutX="76.0" layoutY="135.0" onMouseClicked="#addQuadrado" stroke="BLACK" strokeType="INSIDE" width="44.0" />
-                              <Rectangle id="parede" arcHeight="5.0" arcWidth="5.0" fill="#868686" height="138.0" layoutX="27.0" layoutY="203.0" onMouseClicked="#addWall" stroke="BLACK" strokeType="INSIDE" width="18.0" />
-                              <Rectangle id="rampa" arcHeight="5.0" arcWidth="5.0" fill="#6b6b6b" height="17.0" layoutX="57.0" layoutY="252.0" onMouseClicked="#addRampa" rotate="37.9" stroke="BLACK" strokeType="INSIDE" width="127.0" />
-                              <Rectangle id="chao" arcHeight="5.0" arcWidth="5.0" fill="#909090" height="17.0" layoutX="50.0" layoutY="318.0" onMouseClicked="#addGround" stroke="BLACK" strokeType="INSIDE" width="140.0" />
+                              <TabPane layoutX="14.0" layoutY="14.0" prefHeight="274.0" prefWidth="195.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <tabs>
+                                    <Tab text="Adicionar Objetos">
+                                       <content>
+                                          <AnchorPane prefHeight="173.0" prefWidth="195.0">
+                                             <children>
+                                                <Circle id="bola" fx:id="circle2" layoutX="70.0" layoutY="26.0" onMouseClicked="#addCirculo" radius="22.0" stroke="BLACK" strokeType="INSIDE">
+                                                   <fill>
+                                                      <LinearGradient endX="0.3942307692307693" endY="0.6634615384615384">
+                                                         <stops>
+                                                            <Stop color="#1d89ee" />
+                                                            <Stop color="WHITE" offset="1.0" />
+                                                         </stops>
+                                                      </LinearGradient>
+                                                   </fill>
+                                                </Circle>
+                                                <Rectangle id="parede" arcHeight="5.0" arcWidth="5.0" fill="#868686" height="138.0" layoutX="22.0" layoutY="48.0" onMouseClicked="#addWall" stroke="BLACK" strokeType="INSIDE" width="18.0" />
+                                                <Rectangle id="rampa" arcHeight="5.0" arcWidth="5.0" fill="#6b6b6b" height="17.0" layoutX="64.0" layoutY="94.0" onMouseClicked="#addRampa" rotate="37.9" stroke="BLACK" strokeType="INSIDE" width="108.0" />
+                                                <Rectangle id="chao" arcHeight="5.0" arcWidth="5.0" fill="#909090" height="17.0" layoutX="56.0" layoutY="153.0" onMouseClicked="#addGround" stroke="BLACK" strokeType="INSIDE" width="103.0" />
+                                                <Rectangle id="quadrado" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="44.0" layoutX="137.0" layoutY="15.0" onMouseClicked="#addQuadrado" stroke="BLACK" strokeType="INSIDE" width="44.0" />
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab text="Gráficos">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <LineChart id="grafico" fx:id="grafico" layoutX="-11.0" layoutY="18.0" prefHeight="142.0" prefWidth="178.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <xAxis>
+                                                    <NumberAxis side="BOTTOM" />
+                                                  </xAxis>
+                                                  <yAxis>
+                                                    <NumberAxis side="LEFT" />
+                                                  </yAxis>
+                                                </LineChart>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </Tab>
+                                 </tabs>
+                              </TabPane>
+                              <TabPane layoutY="222.0" prefHeight="309.0" prefWidth="195.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                <tabs>
+                                  <Tab text="Variáveis do Objeto">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <Label layoutX="8.0" layoutY="14.0" text="Velocidade Inicial(m/s)" />
+                                                <Label layoutX="6.0" layoutY="40.0" text="Vx" />
+                                                <Label layoutX="98.0" layoutY="40.0" text="Vy" />
+                                                <TextField id="vx" fx:id="Vx" layoutX="28.0" layoutY="35.0" prefHeight="27.0" prefWidth="64.0" promptText="0.0" />
+                                                <TextField id="vy" fx:id="Vy" layoutX="117.0" layoutY="35.0" prefHeight="27.0" prefWidth="64.0" promptText="0.0" />
+                                                <Label layoutX="5.0" layoutY="78.0" text="Coeficiente de Atrito" />
+                                                <TextField id="ca" fx:id="Coef_atrito" layoutX="139.0" layoutY="73.0" prefHeight="27.0" prefWidth="44.0" />
+                                                <Label layoutX="5.0" layoutY="118.0" text="Coeficente de Elasticidade" />
+                                                <TextField id="ce" fx:id="Coef_elasticidade" layoutX="171.0" layoutY="113.0" prefHeight="27.0" prefWidth="44.0" />
+                                                <Label layoutX="5.0" layoutY="147.0" text="Massa(kg)" />
+                                                <TextField id="masa" fx:id="Massa" layoutX="70.0" layoutY="142.0" prefHeight="27.0" prefWidth="88.0" />
+                                                <Button id="btaplicar_variaveis" alignment="CENTER" layoutX="8.0" layoutY="203.0" mnemonicParsing="false" onMouseClicked="#aplicarCaracteristicas" prefHeight="27.0" prefWidth="156.0" text="Aplicar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                  <Tab text="Forma">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    </content>
+                                  </Tab>
+                                </tabs>
+                              </TabPane>
                            </children>
                         </AnchorPane>
                     </items>

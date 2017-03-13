@@ -15,9 +15,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -38,11 +41,17 @@ public class Main extends Application {
 	World2 world;
 	double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
-
+    long tempo = 0;
+    int tempo_segundos = 0;
     boolean pare = false;
+    
+    
 	//Parte do jBox2D
 	//BouncyBall ball = new BouncyBall(45,90, Utility.BALL_RADIUS, Color.ALICEBLUE);
     BouncyBall ball = new BouncyBall(45,90, Utility.BALL_RADIUS, Color.ALICEBLUE);
+    int index_selecionado;
+    
+    
 
 	final Timeline timeline =  new Timeline();
 
@@ -67,6 +76,21 @@ public class Main extends Application {
 
 	boolean adicionando = false;
 
+	//Parte das variaveis do objeto
+	@FXML
+	private TextField Vx;
+	@FXML
+	private TextField Vy;
+	@FXML
+	private TextField Coef_atrito;
+	@FXML
+	private TextField Coef_elasticidade;
+	@FXML
+	private TextField Massa;
+	
+	//GrÃ¡fico
+	@FXML
+	private LineChart grafico;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -231,6 +255,7 @@ public class Main extends Application {
 
 	@FXML
 	private void starttime(){
+		ConfigGrafico();
 		System.out.println("Tamanho do Painel de simulaÃ§Ã£o");
 		System.out.println(playground.getWidth());
 		System.out.println(playground.getHeight());
@@ -248,18 +273,36 @@ public class Main extends Application {
 		}
 
 
+
 //		circle2.setOnMousePressed(circleOnMousePressedEventHandler);
 //		circle2.setOnMouseDragged(circleOnMouseDraggedEventHandler);
 //		circle2.setOnMouseReleased(circleOnFim);
 	}
+	
+	private void ConfigGrafico(){
+		
+		grafico.setCreateSymbols(false);
+		
+	}
+	
 	@FXML
 	private void stoptime(){
 		timeline.stop();
+
+
+    	
 	}
 
 	@FXML
 	private void recomecar(){
-		Utility.CalcularTela();
+		grafico.getData().clear();
+		if (index_selecionado > -1)
+		{
+			world.bodys.get(index_selecionado).pontos_grafico.getData().clear();
+			grafico.getData().add(world.bodys.get(index_selecionado).pontos_grafico.getData());
+		}
+		tempo = 0;
+		tempo_segundos = 0;
 	}
 	public static void main(String[] args) {
 		launch(args);
@@ -267,11 +310,24 @@ public class Main extends Application {
 	}
 
 	EventHandler<ActionEvent> eventotempo = new EventHandler<ActionEvent>() {
-        public void handle(ActionEvent t) {
-                    //Create time step. Set Iteration count 8 for velocity and 3 for positions
+		public void handle(ActionEvent t) {
+			//Create time step. Set Iteration count 8 for velocity and 3 for positions
 
-       			world.tick();
-       }
+			world.tick();
+			tempo++;
+			if (tempo > 20)
+			{
+				tempo = 0;
+				tempo_segundos++;
+
+				if (index_selecionado > -1){
+					float velocidade = world.bodys.get(index_selecionado).physics.getPosition().y;
+					//world.bodys.get(index_selecionado).pontos_grafico.getData().add(new XYChart.Data(tempo_segundos,velocidade));
+					world.bodys.get(index_selecionado).pontos_grafico.getData().add(new XYChart.Data(tempo_segundos,velocidade));
+
+				}
+			}
+		}
     };
 	EventHandler<MouseEvent> circleOnMousePressedEventHandler =
 		        new EventHandler<MouseEvent>() {
@@ -286,6 +342,10 @@ public class Main extends Application {
 		        	Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
 		        	ball.GuardarPosicaoCentroInicial();
 		        	ball.GuardarPosicaoVerticeInicial();
+		        	CarregarVariaveisObjetos(ball);
+		        	grafico.getData().add(world.bodys.get(index_selecionado).pontos_grafico);
+		        	grafico.getXAxis().setAutoRanging(true);
+		        	grafico.getYAxis().setAutoRanging(true);
 		            timeline.stop();
 		        }
 		    };
@@ -343,11 +403,11 @@ public class Main extends Application {
 //			 }
 //		  }
 		  System.out.println("Mouse movendo");
-		  System.out.print("Posição X: ");
+		  System.out.print("Posiï¿½ï¿½o X: ");
 		  System.out.println(t.getSceneX());
-		  System.out.print("Posição Y crua: ");
+		  System.out.print("Posiï¿½ï¿½o Y crua: ");
 		  System.out.println(t.getSceneY());
-		  System.out.print("Posição Y corrigida: ");
+		  System.out.print("Posiï¿½ï¿½o Y corrigida: ");
 		  System.out.println(t.getY());
 		 // System.out.println();
 	  }
@@ -438,7 +498,7 @@ public class Main extends Application {
 
 	        //aqui onde ocorre realmente a mudanca de posicao
 	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
-	        System.out.println("Posição inicial");
+	        System.out.println("Posiï¿½ï¿½o inicial");
 	        System.out.println(ball.pcx_inicial);
 	        //float theta = ba
 
@@ -464,6 +524,19 @@ public class Main extends Application {
 		}
 
 	};
+	
+	private void CarregarVariaveisObjetos(Body3 body3){
+		
+		Body body = body3.physics;
+		Vx.setText(String.format("%.2f", body.m_linearVelocity.x));
+		Vy.setText(String.format("%.2f", body.m_linearVelocity.y));
+		Coef_atrito.setText(String.format("%.2f", body.getFixtureList().m_friction));
+		Coef_elasticidade.setText(String.format("%.2f", body.getFixtureList().m_restitution));
+		Massa.setText(String.format("%.2f", body.getMass()));
+		this.index_selecionado = (int)body3.shape.getUserData();
+		
+	}
+	
 	//Eventos das formas que sÃ£o adicionadas
 
 	@FXML
@@ -474,6 +547,7 @@ public class Main extends Application {
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 			Utility.WIDTH = (int)playground.getWidth();
 			Utility.HEIGHT = (int)playground.getHeight();
+			Utility.TAMANHO_REAL_ALTURA = ((Utility.HEIGHT*1.0f)/Utility.WIDTH)*Utility.TAMANHO_REAL_LARGURA;
 
 		}
 		int index = this.world.CriarCirculo(8, 200, 20, Color.RED);
@@ -493,6 +567,7 @@ public class Main extends Application {
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 			Utility.WIDTH = (int)playground.getWidth();
 			Utility.HEIGHT = (int)playground.getHeight();
+			Utility.TAMANHO_REAL_ALTURA = ((Utility.HEIGHT*1.0f)/Utility.WIDTH)*Utility.TAMANHO_REAL_LARGURA;
 		}
 
 		int index = 0;
@@ -516,6 +591,7 @@ public class Main extends Application {
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 			Utility.WIDTH = (int)playground.getWidth();
 			Utility.HEIGHT = (int)playground.getHeight();
+			Utility.TAMANHO_REAL_ALTURA = ((Utility.HEIGHT*1.0f)/Utility.WIDTH)*Utility.TAMANHO_REAL_LARGURA;
 		}
 
 		int angulo = 20;
@@ -549,6 +625,7 @@ public class Main extends Application {
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 			Utility.WIDTH = (int)playground.getWidth();
 			Utility.HEIGHT = (int)playground.getHeight();
+			Utility.TAMANHO_REAL_ALTURA = ((Utility.HEIGHT*1.0f)/Utility.WIDTH)*Utility.TAMANHO_REAL_LARGURA;
 		}
 
 		int angulo = 20;
@@ -609,4 +686,23 @@ public class Main extends Application {
 
 
 	}
+	
+	
+	//Aplicar nvas caracteristicas
+	@FXML
+	private void aplicarCaracteristicas(){
+		
+		if (this.index_selecionado >-1){
+			System.out.println(Vx.getText().replace(',', '.'));
+			Vec2 velocidade = new Vec2( Float.parseFloat(Vx.getText().replace(',', '.')),Float.parseFloat(Vy.getText().replace(',', '.')) );
+			world.bodys.get(index_selecionado).physics.setLinearVelocity(velocidade);
+			world.bodys.get(index_selecionado).physics.getFixtureList().m_friction = Float.parseFloat(Coef_atrito.getText().replace(',', '.'));
+			world.bodys.get(index_selecionado).physics.getFixtureList().m_restitution = Float.parseFloat(Coef_elasticidade.getText().replace(',', '.'));
+			//world.bodys.get(index_selecionado).physics.mass = Float.parseFloat(Coef_atrito.getText().replace(',', '.'));
+			world.bodys.get(index_selecionado).physics.resetMassData();
+			
+		}
+
+	}
+	
 }
