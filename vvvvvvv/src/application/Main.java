@@ -295,11 +295,11 @@ public class Main extends Application {
 
 	@FXML
 	private void recomecar(){
-		grafico.getData().clear();
+		
 		if (index_selecionado > -1)
 		{
 			world.bodys.get(index_selecionado).pontos_grafico.getData().clear();
-			grafico.getData().add(world.bodys.get(index_selecionado).pontos_grafico.getData());
+			//grafico.getData().add(world.bodys.get(index_selecionado).pontos_grafico.getData());
 		}
 		tempo = 0;
 		tempo_segundos = 0;
