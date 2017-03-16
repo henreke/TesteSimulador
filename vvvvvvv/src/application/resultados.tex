@@ -1,0 +1,30 @@
+\chapter{Resultados}
+
+Para o desenvolvimento do simulador, foi escolhida a linguagem de programação Java. A motivação da escolha do Java se deve a diversos fatores:
+
+\begin{itemize}
+	\item Java é uma das linguagens mais utilizadas no momento
+	\item A \textit{engine} jbox2D possui a parte de simulação de fluídos o que facilita trabalhos futuros na simulação de experiências com fluídos.
+	\item Portabilidade dos arquivos executáveis do Java em qualquer Sistema Operacional, incluindo Android, o que facilita a utilização pelos alunos, professores e escolas.
+	\item Ferramentas para construção da interface gráfica como o \textit{SceneBuilder}.
+	\item Vasta documentação a respeito da linguagem.
+\end{itemize}
+
+Com a escolha do Java, o passo seguinte foi a escolha do pacote para a construção da interface. A escolhida foi o JavaFX que é um conjunto de pacotes gráficos e de mídia desenvolvidos pela Oracle e que permite os desenvolvedores criar aplicações de interfaces complexas para várias plataformas \url{http://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm#JFXST784}. Além disso o JavaFX também possui um pacote para a construção de gráficos que é um ponto importante para a apresentação dos resultados da simulação.
+
+O JavaFX não foi apresentado durante o curso de Engenharia da Computação. Dessa forma foi necessário estudar o pacote, para a criação da interface do simulador e dos objetos que seriam simulados. Para o estudo foi utilizada a documentação presente no site da Oracle \url{http://docs.oracle.com/javase/8/javase-clienttechnologies.htm}. Para \textit{engine} jbox2D a documentação é escassa e não possui um manual de utilização. Dessa forma, foi necessário a leitura do manual da engine box2D que foi escrita para C++ já que a jbox2D é baseada nesta. 
+
+O grande desafio deste trabalho foi integrar os resultados calculados pela \textit{engine} com a parte visual que está sendo implementada pelo JavaFX. Os seguintes problemas tiveram que ser tratatados:
+
+\begin{itemize}
+	\item As coordenadas de espaço que são utilizadas na jbox2D são em metros já no JavaFX as coordenadas são em pixels. Sendo assim foi necessário a implementação de funções para traduzir essas informações entre as bibliotecas.
+	\item A unidade de utilizada para medir ângulo e o sentido também é diferente entre JavaFX - graus e a jbox2D - radianos. Outras funções também foram utilizadas para solução deste problema.
+	\item além das unidades que diferem o ponto do corpo que é levado em consideração para o posicionamento entre as duas bibliotecas também divergem. Para o JavaFX o ponto utilizado é o vértice mais esquerda e mais alto para formas que não são redondas, para a jbox2D é utilizado o centro do corpo como referência portanto essa diferença entre os referenciais de posicionamento também foram tratadas.
+\end{itemize}
+
+
+As classe fundamentais da engine são: World, Body, BodyDef, FixtureDef.
+
+\section{Classes}
+
+A classe World é responsável pelo controle da simulação. É através dela que são feitos os cálculos da evolução da simulação. A evolução consiste no cálculo da posição dos corpos criados no mundo que está sendo simulado e a interação entre os corpos.
