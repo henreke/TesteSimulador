@@ -17,9 +17,10 @@ O JavaFX não foi apresentado durante o curso de Engenharia da Computação. Des
 O grande desafio deste trabalho foi integrar os resultados calculados pela \textit{engine} com a parte visual que está sendo implementada pelo JavaFX. Os seguintes problemas tiveram que ser tratatados:
 
 \begin{itemize}
-	\item As coordenadas de espaço que são utilizadas na jbox2D são em metros já no JavaFX as coordenadas são em pixels. Sendo assim foi necessário a implementação de funções para traduzir essas informações entre as bibliotecas.
-	\item A unidade de utilizada para medir ângulo e o sentido também é diferente entre JavaFX - graus e a jbox2D - radianos. Outras funções também foram utilizadas para solução deste problema.
-	\item além das unidades que diferem o ponto do corpo que é levado em consideração para o posicionamento entre as duas bibliotecas também divergem. Para o JavaFX o ponto utilizado é o vértice mais esquerda e mais alto para formas que não são redondas, para a jbox2D é utilizado o centro do corpo como referência portanto essa diferença entre os referenciais de posicionamento também foram tratadas.
+	\item As coordenadas de espaço que são utilizadas na jbox2D são em metros já no JavaFX as coordenadas são em pixels. Sendo assim, foi necessário a implementação de funções para traduzir essas informações entre as bibliotecas.
+	\item A unidade de utilizada para medir ângulo e o sentido também é diferente entre JavaFX - graus e a jbox2D - radianos. E o sentido de mudança angular é oposto, um é horário e o outro é anti-horário. Outras funções também foram utilizadas para solução deste problema.
+	\item Além das unidades que diferem o ponto do corpo que é levado em consideração para o posicionamento entre as duas bibliotecas também diverge. Para o JavaFX o ponto utilizado é o vértice mais esquerda e mais alto para formas que não são circulares, para a jbox2D é utilizado o centro do corpo como referência. Portanto essa diferença entre os referenciais de posicionamento também foram tratadas.
+	\item Para que as coordenadas sejam transformadas entre as bibliotecas é necessário que as dimensões do quadro que a simulação está sendo exibida sejam passadas como parâmetro e também as dimensões em metros do mundo que está sendo simulado pela jbox2D. A proporção entre largura e altura em \textit{pixels} deve ser a mesma proporção entre largura e altura do mundo criado pelo jbox2D.
 \end{itemize}
 
 
