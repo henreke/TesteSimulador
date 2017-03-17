@@ -137,6 +137,7 @@ public class World2 extends org.jbox2d.dynamics.World{
         body.physics.setUserData(body);
         body.shape_height = raio;
         body.shape_width = raio;
+        body.shape_type = Body3.Forma.CIRCLE;
         bodys.add(body);
         Contato contato = new Contato();
         this.setContactListener(contato);
@@ -185,6 +186,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        body.physics_height = Utility.toHeight(height/2);
 	        body.shape_height = height;
 	        body.shape_width = width;
+	        body.shape_type = Body3.Forma.RECTANGLE;
 	        bodys.add(body);
 	        //world.createBody(bd).createShape(sd);;
 			return bodys.indexOf(body);
@@ -240,6 +242,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        body.physics_height = Utility.toHeight(height/2);
 	        body.shape_height = height;
 	        body.shape_width = width;
+	        body.shape_type = Body3.Forma.RECTANGLE;
 	        bodys.add(body);
 	        //world.createBody(bd).createShape(sd);;
 			return bodys.indexOf(body);
@@ -293,6 +296,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        body.physics_height = Utility.toHeight(height/2);
 	        body.shape_height = height;
 	        body.shape_width = width;
+	        body.shape_type = Body3.Forma.RECTANGLE;
 	        bodys.add(body);
 	        //world.createBody(bd).createShape(sd);;
 			return bodys.indexOf(body);
@@ -306,7 +310,9 @@ public class World2 extends org.jbox2d.dynamics.World{
     	PolygonShape ps = new PolygonShape();
         ps.setAsBox(Utility.toWidth(width)/2f, Utility.toHeight(height)/2f);
 
+
         FixtureDef fd = new FixtureDef();
+
         fd.shape = ps;
         fd.friction = 0.1f;
         fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
@@ -323,6 +329,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 
         body.physics = this.createBody(bd);
         body.physics.createFixture(fd);
+
 
 
 
@@ -354,7 +361,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 
         body.shape_height = height;
         body.shape_width = width;
-
+        body.shape_type = Body3.Forma.RECTANGLE;
 		bodys.add(body);
         //world.createBody(bd).createShape(sd);;
 		return bodys.indexOf(body);
@@ -417,6 +424,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 		return bodys.indexOf(body);
     }
 
+
 }
 class Body3{
 
@@ -434,6 +442,7 @@ class Body3{
 	public float pvy_inicial = 0;
 	public float shape_width = 0;
 	public float shape_height = 0;
+	public Forma shape_type = Forma.RECTANGLE;
 	public  XYChart.Series pontos_grafico = new Series();
 
 	public float getCosAngle(){
@@ -476,6 +485,48 @@ class Body3{
 	public Vec2 CalcularDeltaPosicao(float px,float py){
 		return new Vec2(px-pvx_inicial,py-pvy_inicial);
 	}
+	public void resize(float width, float height){
+
+		Fixture fx = this.physics.m_fixtureList;
+		FixtureDef fd = new FixtureDef();
+
+
+		org.jbox2d.collision.shapes.Shape ps;
+
+		if (this.shape_type == Forma.RECTANGLE){
+
+			ps = new PolygonShape();
+			((PolygonShape)ps).setAsBox(Utility.toWidth(width/2), Utility.toHeight(height/2));
+			((Rectangle)this.shape).setWidth(width);
+			((Rectangle)this.shape).setHeight(height);
+			//float xpos = this.physics.getPosition().x + Utility.toWidth(width/2);
+	    	//float ypos = this.physics.getPosition().y - Utility.toHeight(height/2);
+	    	//this.physics.setTransform(new Vec2(xpos, ypos),0);
+		}
+		else
+		{
+			ps = new CircleShape();
+			((CircleShape)ps).m_radius = Utility.toWidth(width);
+			((Circle)this.shape).setRadius(width);
+		}
+
+
+        fd.shape = ps;
+        fd.density = fx.getDensity();
+        fd.friction = fx.getFriction();
+        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
+
+        this.physics.destroyFixture(fx);
+        this.physics.createFixture(fd);
+
+
+        //Parte visual
+        float xpos = this.physics.getPosition().x + Utility.toWidth(width/4);
+    	float ypos = this.physics.getPosition().y - Utility.toHeight(height/4);
+    	this.physics.setTransform(new Vec2(xpos, ypos),0);
+
+	}
 	public static enum ContactType{
 		BODYS (0x0002),
 		SENSOR (0x0004);
@@ -487,6 +538,9 @@ class Body3{
 		public int tipo(){
 			return tipo;
 		}
+	}
+	public static enum Forma{
+		CIRCLE,RECTANGLE
 	}
 
 }

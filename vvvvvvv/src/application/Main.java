@@ -1,5 +1,7 @@
 package application;
 
+import java.awt.Scrollbar;
+
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
@@ -44,14 +46,14 @@ public class Main extends Application {
     long tempo = 0;
     int tempo_segundos = 0;
     boolean pare = false;
-    
-    
+
+
 	//Parte do jBox2D
 	//BouncyBall ball = new BouncyBall(45,90, Utility.BALL_RADIUS, Color.ALICEBLUE);
     BouncyBall ball = new BouncyBall(45,90, Utility.BALL_RADIUS, Color.ALICEBLUE);
     int index_selecionado;
-    
-    
+
+
 
 	final Timeline timeline =  new Timeline();
 
@@ -87,10 +89,16 @@ public class Main extends Application {
 	private TextField Coef_elasticidade;
 	@FXML
 	private TextField Massa;
-	
+
 	//Gráfico
 	@FXML
 	private LineChart grafico;
+
+	//Formas
+	@FXML
+	private TextField largura;
+	@FXML
+	private TextField altura;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -278,24 +286,24 @@ public class Main extends Application {
 //		circle2.setOnMouseDragged(circleOnMouseDraggedEventHandler);
 //		circle2.setOnMouseReleased(circleOnFim);
 	}
-	
+
 	private void ConfigGrafico(){
-		
+
 		grafico.setCreateSymbols(false);
-		
+
 	}
-	
+
 	@FXML
 	private void stoptime(){
 		timeline.stop();
 
 
-    	
+
 	}
 
 	@FXML
 	private void recomecar(){
-		
+
 		if (index_selecionado > -1)
 		{
 			world.bodys.get(index_selecionado).pontos_grafico.getData().clear();
@@ -524,9 +532,9 @@ public class Main extends Application {
 		}
 
 	};
-	
+
 	private void CarregarVariaveisObjetos(Body3 body3){
-		
+
 		Body body = body3.physics;
 		Vx.setText(String.format("%.2f", body.m_linearVelocity.x));
 		Vy.setText(String.format("%.2f", body.m_linearVelocity.y));
@@ -534,9 +542,9 @@ public class Main extends Application {
 		Coef_elasticidade.setText(String.format("%.2f", body.getFixtureList().m_restitution));
 		Massa.setText(String.format("%.2f", body.getMass()));
 		this.index_selecionado = (int)body3.shape.getUserData();
-		
+
 	}
-	
+
 	//Eventos das formas que são adicionadas
 
 	@FXML
@@ -686,12 +694,12 @@ public class Main extends Application {
 
 
 	}
-	
-	
+
+
 	//Aplicar nvas caracteristicas
 	@FXML
 	private void aplicarCaracteristicas(){
-		
+
 		if (this.index_selecionado >-1){
 			System.out.println(Vx.getText().replace(',', '.'));
 			Vec2 velocidade = new Vec2( Float.parseFloat(Vx.getText().replace(',', '.')),Float.parseFloat(Vy.getText().replace(',', '.')) );
@@ -700,9 +708,24 @@ public class Main extends Application {
 			world.bodys.get(index_selecionado).physics.getFixtureList().m_restitution = Float.parseFloat(Coef_elasticidade.getText().replace(',', '.'));
 			//world.bodys.get(index_selecionado).physics.mass = Float.parseFloat(Coef_atrito.getText().replace(',', '.'));
 			world.bodys.get(index_selecionado).physics.resetMassData();
-			
+
 		}
 
 	}
-	
+
+	//Formas
+	@FXML
+	private void modificarForma(){
+		if (index_selecionado>-1){
+
+			float largura = Float.parseFloat(this.largura.getText().replace(',', '.'));
+			float altura = Float.parseFloat(this.altura.getText().replace(',', '.'));
+			world.bodys.get(index_selecionado).resize(largura, altura);
+
+		}
+	}
+
+
+
+
 }
