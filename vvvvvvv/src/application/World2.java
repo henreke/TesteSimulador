@@ -106,7 +106,8 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 		//criar a defini��o da bola visual
 		Circle ball = new Circle();
-        ball.setRadius(Utility.toPixelWidth(raio));
+        //ball.setRadius(Utility.toPixelWidth(raio));
+		ball.setRadius(Utility.toPixelWidth(raio));
         ball.setLayoutX(pixelX);
         ball.setLayoutY(pixelY);
         ball.setFill(cor);
@@ -135,8 +136,8 @@ public class World2 extends org.jbox2d.dynamics.World{
         body.physics.createFixture(fd);
 
         body.physics.setUserData(body);
-        body.shape_height = raio;
-        body.shape_width = raio;
+        body.shape_height =0;
+        body.shape_width = 0;
         body.shape_type = Body3.Forma.CIRCLE;
         bodys.add(body);
         Contato contato = new Contato();
@@ -341,14 +342,14 @@ public class World2 extends org.jbox2d.dynamics.World{
 		rampa.setRotate(-rotation-0.27);
 		//rampa.getTransforms().add(new Rotate(-rotation, width/2,height/2,0));
 
-		System.out.println("Meio do bixo");
-
-		System.out.println(PosX+ width/2);
-		System.out.println(Utility.toPixelPosX(body.physics.getPosition().x));
-		System.out.println(PosY+height/2);
-		System.out.println( Utility.toPixelPosY(body.physics.getPosition().y));
-		//rampa.setRotationAxis(new Point3D(Utility.toPixelPosX(bd.position.x),Utility.toPixelPosY(bd.position.y),0));
-		//rampa.rotationAxisProperty();
+//		System.out.println("Meio do bixo");
+//
+//		System.out.println(PosX+ width/2);
+//		System.out.println(Utility.toPixelPosX(body.physics.getPosition().x));
+//		System.out.println(PosY+height/2);
+//		System.out.println( Utility.toPixelPosY(body.physics.getPosition().y));
+//		//rampa.setRotationAxis(new Point3D(Utility.toPixelPosX(bd.position.x),Utility.toPixelPosY(bd.position.y),0));
+//		//rampa.rotationAxisProperty();
 
 
 		body.shape = rampa;
@@ -490,18 +491,26 @@ class Body3{
 		Fixture fx = this.physics.m_fixtureList;
 		FixtureDef fd = new FixtureDef();
 
-
+		float height_incial = 0;
+		float width_inicial = 0;
 		org.jbox2d.collision.shapes.Shape ps;
 
 		if (this.shape_type == Forma.RECTANGLE){
 
 			ps = new PolygonShape();
 			((PolygonShape)ps).setAsBox(Utility.toWidth(width/2), Utility.toHeight(height/2));
+			height_incial = (float)((Rectangle)this.shape).getHeight();
+			width_inicial = (float)((Rectangle)this.shape).getWidth();
 			((Rectangle)this.shape).setWidth(width);
 			((Rectangle)this.shape).setHeight(height);
-			//float xpos = this.physics.getPosition().x + Utility.toWidth(width/2);
-	    	//float ypos = this.physics.getPosition().y - Utility.toHeight(height/2);
-	    	//this.physics.setTransform(new Vec2(xpos, ypos),0);
+			this.shape_height = height;
+			this.shape_width = width;
+
+			 //Parte visual
+	        Vec2 nova = this.physics.getPosition();
+	        this.shape.setLayoutX(Utility.toPixelPosX(nova.x)-(float)(this.shape_width/2));
+			//body.shape.setLayoutX(300);
+	    	this.shape.setLayoutY(Utility.toPixelPosY(nova.y)-(float)(this.shape_height/2));
 		}
 		else
 		{
@@ -514,17 +523,14 @@ class Body3{
         fd.shape = ps;
         fd.density = fx.getDensity();
         fd.friction = fx.getFriction();
-        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
-        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
+        fd.filter.categoryBits = fx.m_filter.categoryBits;// Body3.ContactType.BODYS.tipo();
+        fd.filter.maskBits = fx.m_filter.maskBits;// Body3.ContactType.BODYS.tipo();
 
         this.physics.destroyFixture(fx);
         this.physics.createFixture(fd);
 
 
-        //Parte visual
-        float xpos = this.physics.getPosition().x + Utility.toWidth(width/4);
-    	float ypos = this.physics.getPosition().y - Utility.toHeight(height/4);
-    	this.physics.setTransform(new Vec2(xpos, ypos),0);
+
 
 	}
 	public static enum ContactType{

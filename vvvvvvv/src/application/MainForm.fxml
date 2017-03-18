@@ -105,6 +105,8 @@
                                                 <TextField id="largura" fx:id="largura" layoutX="61.0" layoutY="10.0" prefHeight="25.0" prefWidth="125.0" />
                                                 <TextField id="altura" fx:id="altura" layoutX="61.0" layoutY="40.0" prefHeight="25.0" prefWidth="126.0" />
                                                 <Button layoutX="61.0" layoutY="102.0" mnemonicParsing="false" onMouseClicked="#modificarForma" text="Aplicar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                <Label layoutY="78.0" text="Angulo(º):" />
+                                                <TextField id="angulo" fx:id="angulo" layoutX="61.0" layoutY="74.0" prefHeight="25.0" prefWidth="127.0" />
                                              </children></AnchorPane>
                                     </content>
                                   </Tab>

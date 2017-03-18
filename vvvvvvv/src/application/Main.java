@@ -99,6 +99,8 @@ public class Main extends Application {
 	private TextField largura;
 	@FXML
 	private TextField altura;
+	@FXML
+	private TextField angulo;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -337,26 +339,7 @@ public class Main extends Application {
 			}
 		}
     };
-	EventHandler<MouseEvent> circleOnMousePressedEventHandler =
-		        new EventHandler<MouseEvent>() {
 
-		        @Override
-		        public void handle(MouseEvent t) {
-		            /*orgSceneX = t.getSceneX();
-		            orgSceneY = t.getSceneY();
-		            orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
-		            orgTranslateY = ((Circle)(t.getSource())).getTranslateY();*/
-		            //System.out.println("clique");
-		        	Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
-		        	ball.GuardarPosicaoCentroInicial();
-		        	ball.GuardarPosicaoVerticeInicial();
-		        	CarregarVariaveisObjetos(ball);
-		        	grafico.getData().add(world.bodys.get(index_selecionado).pontos_grafico);
-		        	grafico.getXAxis().setAutoRanging(true);
-		        	grafico.getYAxis().setAutoRanging(true);
-		            timeline.stop();
-		        }
-		    };
 
 
 	  @FXML
@@ -419,6 +402,29 @@ public class Main extends Application {
 		  System.out.println(t.getY());
 		 // System.out.println();
 	  }
+	  //Eventos de arrastar e soltar
+
+		EventHandler<MouseEvent> circleOnMousePressedEventHandler =
+		        new EventHandler<MouseEvent>() {
+
+		        @Override
+		        public void handle(MouseEvent t) {
+		            /*orgSceneX = t.getSceneX();
+		            orgSceneY = t.getSceneY();
+		            orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
+		            orgTranslateY = ((Circle)(t.getSource())).getTranslateY();*/
+		            //System.out.println("clique");
+		        	Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
+		        	ball.GuardarPosicaoCentroInicial();
+		        	ball.GuardarPosicaoVerticeInicial();
+		        	CarregarVariaveisObjetos(ball);
+		        	carregarFormasObjetos(ball);
+		        	grafico.getData().add(world.bodys.get(index_selecionado).pontos_grafico);
+		        	grafico.getXAxis().setAutoRanging(true);
+		        	grafico.getYAxis().setAutoRanging(true);
+		            timeline.stop();
+		        }
+		    };
 
 	  EventHandler<MouseEvent> circleOnMouseDraggedEventHandler =
 		        new EventHandler<MouseEvent>() {
@@ -545,6 +551,12 @@ public class Main extends Application {
 
 	}
 
+	private void carregarFormasObjetos(Body3 body3){
+
+		largura.setText(String.format("%.2f", body3.shape_width));
+		altura.setText(String.format("%.2f", body3.shape_height));
+
+	}
 	//Eventos das formas que são adicionadas
 
 	@FXML
@@ -672,15 +684,15 @@ public class Main extends Application {
 		world.bodys.get(index).shape.setOnMouseReleased(RampaOnFim);
 		world.bodys.get(index).shape.setUserData(index);
 
-		Circle meio = new Circle(world.bodys.get(index).shape.getLayoutX(), world.bodys.get(index).shape.getLayoutY(), 4);
-		meio.setFill(Color.RED);
-		playground.getChildren().add(meio);
-
-		Vec2 meiopos = new Vec2(world.bodys.get(index).physics.getPosition());
-		Circle meio2 = new Circle(Utility.toPixelPosX(meiopos.x), Utility.toPixelPosY(meiopos.y), 4);
-		meio2.setFill(Color.BLUE);
-
-		playground.getChildren().add(meio2);
+//		Circle meio = new Circle(world.bodys.get(index).shape.getLayoutX(), world.bodys.get(index).shape.getLayoutY(), 4);
+//		meio.setFill(Color.RED);
+//		playground.getChildren().add(meio);
+//
+//		Vec2 meiopos = new Vec2(world.bodys.get(index).physics.getPosition());
+//		Circle meio2 = new Circle(Utility.toPixelPosX(meiopos.x), Utility.toPixelPosY(meiopos.y), 4);
+//		meio2.setFill(Color.BLUE);
+//
+//		playground.getChildren().add(meio2);
 //		index = world.addSensor(0, 400, 600, 1);
 //		playground.getChildren().add(world.bodys.get(index).shape);
 //		playground.getChildren().add(world.bodys.get(index).imagem);
