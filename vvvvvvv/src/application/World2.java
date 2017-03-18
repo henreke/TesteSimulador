@@ -486,7 +486,26 @@ class Body3{
 	public Vec2 CalcularDeltaPosicao(float px,float py){
 		return new Vec2(px-pvx_inicial,py-pvy_inicial);
 	}
-	public void resize(float width, float height){
+
+	public void moverObjeto(float xpos, float ypos){
+
+
+
+		if (this.shape_type == Forma.RECTANGLE){
+			Vec2 novaposicao = this.CalcularDeltaPosicao(xpos, ypos);
+			novaposicao.x = this.pcx_inicial + novaposicao.x;
+			novaposicao.y = this.pcy_inicial + novaposicao.y;
+			this.physics.setTransform(novaposicao,this.physics.getAngle());
+		}
+		else if (this.shape_type == Forma.CIRCLE)
+		{
+
+			Vec2 posicao = new Vec2(xpos, ypos);
+			this.physics.setTransform(posicao,this.physics.getAngle());
+		}
+	}
+
+	public void resize(float width, float height, float angulo){
 
 		Fixture fx = this.physics.m_fixtureList;
 		FixtureDef fd = new FixtureDef();
@@ -511,6 +530,10 @@ class Body3{
 	        this.shape.setLayoutX(Utility.toPixelPosX(nova.x)-(float)(this.shape_width/2));
 			//body.shape.setLayoutX(300);
 	    	this.shape.setLayoutY(Utility.toPixelPosY(nova.y)-(float)(this.shape_height/2));
+	    	this.shape.setRotate(angulo);
+	    	float angulo_rad = Utility.torad(-angulo);
+	    	this.physics_angle = -angulo;
+	    	this.physics.setTransform(nova,angulo_rad);
 		}
 		else
 		{
@@ -528,6 +551,10 @@ class Body3{
 
         this.physics.destroyFixture(fx);
         this.physics.createFixture(fd);
+
+
+
+
 
 
 

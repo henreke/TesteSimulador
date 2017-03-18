@@ -440,6 +440,10 @@ public class Main extends Application {
 		            ((Circle)(t.getSource())).setTranslateY(newTranslateY);*/
 		            ((Shape)(t.getSource())).setLayoutX(t.getSceneX());
 		            ((Shape)(t.getSource())).setLayoutY(t.getSceneY()-paineltop.getHeight());
+		            float xpos = Utility.toPosX((float)t.getSceneX());
+		            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
+		            Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData()); //Retorna index
+		            ball.moverObjeto(xpos, ypos);
 
 		        }
 		    };
@@ -447,44 +451,51 @@ public class Main extends Application {
 	EventHandler<MouseEvent> circleOnFim = new EventHandler<MouseEvent>(){
 		@Override
         public void handle(MouseEvent t) {
-			//System.out.println("Cicle.getLayout()");
-			//System.out.println(cicle.getLayoutX());
-	        //System.out.println(cicle.getLayoutY());
 
-	        System.out.println("Mouse ponto");
-			System.out.println(t.getSceneX());
-	        System.out.println(t.getSceneY());
+//			float xpos = Utility.toPosX((float)t.getSceneX());
+//            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
+//            Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
+//            ball.moverObjeto(xpos, ypos);
 
-			//Utility.world.destroyBody(ball.body);
 
-        	//ball.bd.position.set( Utility.toPosX((float)cicle.getLayoutX()),Utility.toPosY((float)cicle.getLayoutY())+15);
-			//ball.bd.position.set(45,90);
-        	//ball.body = Utility.world.createBody(ball.bd);
-        	//ball.body.createFixture(ball.fd);
-        	//ball.node.setUserData(ball.body);
-	        float xpos = Utility.toPosX((float)t.getSceneX());
-            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
-            System.out.println("Posicao calculada");
-            System.out.println(xpos);
-	        System.out.println(ypos);
-	        Vec2 patual = ball.body.getPosition();
-	        System.out.println("Posicao bola");
-	        System.out.println(patual.x);
-	        System.out.println(patual.y);
-
-	        //aqui onde ocorre realmente a mudanca de posicao
-	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
-
-	        ball.physics.setTransform(new Vec2(xpos+ball.physics_width, ypos-ball.physics_height),0);
-
-	        //zerando a velocidade para a bola n sair quicando como vinha antes
-	        ball.physics.setLinearVelocity(new Vec2(0,0));
-
-	        Vec2 nova = ball.physics.getPosition();
-	        System.out.println("Posicao atual");
-	        System.out.println(nova.x);
-	        System.out.println(nova.y);
-	        //pare = true;
+//			//System.out.println("Cicle.getLayout()");
+//			//System.out.println(cicle.getLayoutX());
+//	        //System.out.println(cicle.getLayoutY());
+//
+//	        System.out.println("Mouse ponto");
+//			System.out.println(t.getSceneX());
+//	        System.out.println(t.getSceneY());
+//
+//			//Utility.world.destroyBody(ball.body);
+//
+//        	//ball.bd.position.set( Utility.toPosX((float)cicle.getLayoutX()),Utility.toPosY((float)cicle.getLayoutY())+15);
+//			//ball.bd.position.set(45,90);
+//        	//ball.body = Utility.world.createBody(ball.bd);
+//        	//ball.body.createFixture(ball.fd);
+//        	//ball.node.setUserData(ball.body);
+//	        float xpos = Utility.toPosX((float)t.getSceneX());
+//            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
+//            System.out.println("Posicao calculada");
+//            System.out.println(xpos);
+//	        System.out.println(ypos);
+//	        Vec2 patual = ball.body.getPosition();
+//	        System.out.println("Posicao bola");
+//	        System.out.println(patual.x);
+//	        System.out.println(patual.y);
+//
+//	        //aqui onde ocorre realmente a mudanca de posicao
+//	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
+//
+//	        ball.physics.setTransform(new Vec2(xpos+ball.physics_width, ypos-ball.physics_height),0);
+//
+//	        //zerando a velocidade para a bola n sair quicando como vinha antes
+//	        ball.physics.setLinearVelocity(new Vec2(0,0));
+//
+//	        Vec2 nova = ball.physics.getPosition();
+//	        System.out.println("Posicao atual");
+//	        System.out.println(nova.x);
+//	        System.out.println(nova.y);
+//	        //pare = true;
 	        timeline.playFromStart();
 		}
 
@@ -492,47 +503,55 @@ public class Main extends Application {
 	EventHandler<MouseEvent> RampaOnFim = new EventHandler<MouseEvent>(){
 		@Override
         public void handle(MouseEvent t) {
+
+
+
+//			float xpos = Utility.toPosX((float)t.getSceneX());
+//            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
+//            Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData()); //Retorna index
+//            ball.moverObjeto(xpos, ypos);
+
 			//System.out.println("Cicle.getLayout()");
 			//System.out.println(cicle.getLayoutX());
 	        //System.out.println(cicle.getLayoutY());
 
-	        System.out.println("Mouse ponto");
-			System.out.println(t.getSceneX());
-	        System.out.println(t.getSceneY());
-
-	        float xpos = Utility.toPosX((float)t.getSceneX());
-            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
-            System.out.println("Posicao calculada");
-            System.out.println(xpos);
-	        System.out.println(ypos);
-	        Vec2 patual = ball.body.getPosition();
-	        System.out.println("Posicao bola");
-	        System.out.println(patual.x);
-	        System.out.println(patual.y);
-
-	        //aqui onde ocorre realmente a mudanca de posicao
-	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
-	        System.out.println("Posi��o inicial");
-	        System.out.println(ball.pcx_inicial);
-	        //float theta = ba
-
-	        //ball.physics.setTransform(new Vec2(xpos+ball.physics_width, ypos-ball.physics_height),0);
-	        //Vec2 novaposicao = ball.getCenterPosition(xpos, ypos);
-	        //ball.physics.setTransform(new Vec2(ball.px_inicial+, novaposicao.y),0);
-	        //zerando a velocidade para a bola n sair quicando como vinha antes
-
-	        Vec2 novaposicao = ball.CalcularDeltaPosicao(xpos, ypos);
-	        System.out.println("Delta bola");
-	        System.out.println(novaposicao.x);
-	        System.out.println(novaposicao.y);
-	        novaposicao.x = ball.pcx_inicial + novaposicao.x;
-	        novaposicao.y = ball.pcy_inicial + novaposicao.y;
-	        ball.physics.setTransform(novaposicao,ball.physics_angle);
-
-	        Vec2 nova = ball.physics.getPosition();
-	        System.out.println("Posicao atual");
-	        System.out.println(nova.x);
-	        System.out.println(nova.y);
+//	        System.out.println("Mouse ponto");
+//			System.out.println(t.getSceneX());
+//	        System.out.println(t.getSceneY());
+//
+//	        float xpos = Utility.toPosX((float)t.getSceneX());
+//            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
+//            System.out.println("Posicao calculada");
+//            System.out.println(xpos);
+//	        System.out.println(ypos);
+//	        Vec2 patual = ball.body.getPosition();
+//	        System.out.println("Posicao bola");
+//	        System.out.println(patual.x);
+//	        System.out.println(patual.y);
+//
+//	        //aqui onde ocorre realmente a mudanca de posicao
+//	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
+//	        System.out.println("Posi��o inicial");
+//	        System.out.println(ball.pcx_inicial);
+//	        //float theta = ba
+//
+//	        //ball.physics.setTransform(new Vec2(xpos+ball.physics_width, ypos-ball.physics_height),0);
+//	        //Vec2 novaposicao = ball.getCenterPosition(xpos, ypos);
+//	        //ball.physics.setTransform(new Vec2(ball.px_inicial+, novaposicao.y),0);
+//	        //zerando a velocidade para a bola n sair quicando como vinha antes
+//
+//	        Vec2 novaposicao = ball.CalcularDeltaPosicao(xpos, ypos);
+//	        System.out.println("Delta bola");
+//	        System.out.println(novaposicao.x);
+//	        System.out.println(novaposicao.y);
+//	        novaposicao.x = ball.pcx_inicial + novaposicao.x;
+//	        novaposicao.y = ball.pcy_inicial + novaposicao.y;
+//	        ball.physics.setTransform(novaposicao,ball.physics_angle);
+//
+//	        Vec2 nova = ball.physics.getPosition();
+//	        System.out.println("Posicao atual");
+//	        System.out.println(nova.x);
+//	        System.out.println(nova.y);
 	        //pare = true;
 	        timeline.playFromStart();
 		}
@@ -555,6 +574,7 @@ public class Main extends Application {
 
 		largura.setText(String.format("%.2f", body3.shape_width));
 		altura.setText(String.format("%.2f", body3.shape_height));
+		angulo.setText(String.format("%.2f", body3.shape.getRotate()));
 
 	}
 	//Eventos das formas que são adicionadas
@@ -732,7 +752,8 @@ public class Main extends Application {
 
 			float largura = Float.parseFloat(this.largura.getText().replace(',', '.'));
 			float altura = Float.parseFloat(this.altura.getText().replace(',', '.'));
-			world.bodys.get(index_selecionado).resize(largura, altura);
+			float angulo = Float.parseFloat(this.angulo.getText().replace(',', '.'));
+			world.bodys.get(index_selecionado).resize(largura, altura,angulo);
 
 		}
 	}
