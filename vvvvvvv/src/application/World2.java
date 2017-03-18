@@ -342,7 +342,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 		rampa.setRotate(-rotation-0.27);
 		//rampa.getTransforms().add(new Rotate(-rotation, width/2,height/2,0));
 
-//		System.out.println("Meio do bixo");
+//		System.out.println("Meio do fgdfg bixo");
 //
 //		System.out.println(PosX+ width/2);
 //		System.out.println(Utility.toPixelPosX(body.physics.getPosition().x));
