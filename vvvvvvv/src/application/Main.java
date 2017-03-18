@@ -90,7 +90,7 @@ public class Main extends Application {
 	@FXML
 	private TextField Massa;
 
-	//Gráfico parte
+	//Gráfico partegvhf
 	@FXML
 	private LineChart grafico;
 
