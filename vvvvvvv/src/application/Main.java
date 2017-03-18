@@ -247,18 +247,11 @@ public class Main extends Application {
 	@FXML
 	private void moverBola()
 	{
-		//Mover a forma
-		//int index = playground.getChildren().size()-1;
-		//playground.getChildren().get(index).setLayoutX(playground.getChildren().get(index).getLayoutX()+10);
 
 		if (this.world == null)
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 		int index = this.world.CriarCirculo(8, 200, 20, Color.RED);
 		playground.getChildren().add(world.bodys.get(index).shape);
-
-
-
-
 
 	}
 
@@ -282,11 +275,6 @@ public class Main extends Application {
 			timeline.playFromStart();
 		}
 
-
-
-//		circle2.setOnMousePressed(circleOnMousePressedEventHandler);
-//		circle2.setOnMouseDragged(circleOnMouseDraggedEventHandler);
-//		circle2.setOnMouseReleased(circleOnFim);
 	}
 
 	private void ConfigGrafico(){
@@ -451,112 +439,11 @@ public class Main extends Application {
 	EventHandler<MouseEvent> circleOnFim = new EventHandler<MouseEvent>(){
 		@Override
         public void handle(MouseEvent t) {
-
-//			float xpos = Utility.toPosX((float)t.getSceneX());
-//            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
-//            Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
-//            ball.moverObjeto(xpos, ypos);
-
-
-//			//System.out.println("Cicle.getLayout()");
-//			//System.out.println(cicle.getLayoutX());
-//	        //System.out.println(cicle.getLayoutY());
-//
-//	        System.out.println("Mouse ponto");
-//			System.out.println(t.getSceneX());
-//	        System.out.println(t.getSceneY());
-//
-//			//Utility.world.destroyBody(ball.body);
-//
-//        	//ball.bd.position.set( Utility.toPosX((float)cicle.getLayoutX()),Utility.toPosY((float)cicle.getLayoutY())+15);
-//			//ball.bd.position.set(45,90);
-//        	//ball.body = Utility.world.createBody(ball.bd);
-//        	//ball.body.createFixture(ball.fd);
-//        	//ball.node.setUserData(ball.body);
-//	        float xpos = Utility.toPosX((float)t.getSceneX());
-//            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
-//            System.out.println("Posicao calculada");
-//            System.out.println(xpos);
-//	        System.out.println(ypos);
-//	        Vec2 patual = ball.body.getPosition();
-//	        System.out.println("Posicao bola");
-//	        System.out.println(patual.x);
-//	        System.out.println(patual.y);
-//
-//	        //aqui onde ocorre realmente a mudanca de posicao
-//	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
-//
-//	        ball.physics.setTransform(new Vec2(xpos+ball.physics_width, ypos-ball.physics_height),0);
-//
-//	        //zerando a velocidade para a bola n sair quicando como vinha antes
-//	        ball.physics.setLinearVelocity(new Vec2(0,0));
-//
-//	        Vec2 nova = ball.physics.getPosition();
-//	        System.out.println("Posicao atual");
-//	        System.out.println(nova.x);
-//	        System.out.println(nova.y);
-//	        //pare = true;
 	        timeline.playFromStart();
 		}
 
 	};
-	EventHandler<MouseEvent> RampaOnFim = new EventHandler<MouseEvent>(){
-		@Override
-        public void handle(MouseEvent t) {
 
-
-
-//			float xpos = Utility.toPosX((float)t.getSceneX());
-//            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
-//            Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData()); //Retorna index
-//            ball.moverObjeto(xpos, ypos);
-
-			//System.out.println("Cicle.getLayout()");
-			//System.out.println(cicle.getLayoutX());
-	        //System.out.println(cicle.getLayoutY());
-
-//	        System.out.println("Mouse ponto");
-//			System.out.println(t.getSceneX());
-//	        System.out.println(t.getSceneY());
-//
-//	        float xpos = Utility.toPosX((float)t.getSceneX());
-//            float ypos = Utility.toPosY((float)t.getSceneY()-(float)paineltop.getHeight());
-//            System.out.println("Posicao calculada");
-//            System.out.println(xpos);
-//	        System.out.println(ypos);
-//	        Vec2 patual = ball.body.getPosition();
-//	        System.out.println("Posicao bola");
-//	        System.out.println(patual.x);
-//	        System.out.println(patual.y);
-//
-//	        //aqui onde ocorre realmente a mudanca de posicao
-//	        Body3 ball = world.bodys.get((int)((Shape)(t.getSource())).getUserData());
-//	        System.out.println("Posi��o inicial");
-//	        System.out.println(ball.pcx_inicial);
-//	        //float theta = ba
-//
-//	        //ball.physics.setTransform(new Vec2(xpos+ball.physics_width, ypos-ball.physics_height),0);
-//	        //Vec2 novaposicao = ball.getCenterPosition(xpos, ypos);
-//	        //ball.physics.setTransform(new Vec2(ball.px_inicial+, novaposicao.y),0);
-//	        //zerando a velocidade para a bola n sair quicando como vinha antes
-//
-//	        Vec2 novaposicao = ball.CalcularDeltaPosicao(xpos, ypos);
-//	        System.out.println("Delta bola");
-//	        System.out.println(novaposicao.x);
-//	        System.out.println(novaposicao.y);
-//	        novaposicao.x = ball.pcx_inicial + novaposicao.x;
-//	        novaposicao.y = ball.pcy_inicial + novaposicao.y;
-//	        ball.physics.setTransform(novaposicao,ball.physics_angle);
-//
-//	        Vec2 nova = ball.physics.getPosition();
-//	        System.out.println("Posicao atual");
-//	        System.out.println(nova.x);
-//	        System.out.println(nova.y);
-	        //pare = true;
-	        timeline.playFromStart();
-		}
-
-	};
 
 	private void CarregarVariaveisObjetos(Body3 body3){
 
@@ -619,7 +506,7 @@ public class Main extends Application {
 		System.out.println(world.bodys.get(index).shape.rotateProperty().get());
 		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
 		world.bodys.get(index).shape.setOnMouseDragged(circleOnMouseDraggedEventHandler);
-		world.bodys.get(index).shape.setOnMouseReleased(RampaOnFim);
+		world.bodys.get(index).shape.setOnMouseReleased(circleOnFim);
 		world.bodys.get(index).shape.setUserData(index);
 
 	}
@@ -634,10 +521,9 @@ public class Main extends Application {
 			Utility.TAMANHO_REAL_ALTURA = ((Utility.HEIGHT*1.0f)/Utility.WIDTH)*Utility.TAMANHO_REAL_LARGURA;
 		}
 
-		int angulo = 20;
+
 		int index = 0;
-		//index = this.world.addRampa(0, 300, 400, 10,angulo);
-		//playground.getChildren().add(world.bodys.get(index).shape);
+
 		index = world.addGround(0, 400, 800, 10);
 		playground.getChildren().add(world.bodys.get(index).shape);
 		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
@@ -645,16 +531,7 @@ public class Main extends Application {
 		world.bodys.get(index).shape.setOnMouseReleased(circleOnFim);
 		world.bodys.get(index).shape.setUserData(index);
 
-		/*
-		index = world.addSensor(0, 400, 600, 1);
-		playground.getChildren().add(world.bodys.get(index).shape);
-		playground.getChildren().add(world.bodys.get(index).imagem);
 
-
-		index = world.addWall(0, 0, 4, 600);
-		playground.getChildren().add(world.bodys.get(index).shape);
-		index = world.addWall(600, 0, 4, 600);
-		playground.getChildren().add(world.bodys.get(index).shape);*/
 
 	}
 
@@ -668,10 +545,8 @@ public class Main extends Application {
 			Utility.TAMANHO_REAL_ALTURA = ((Utility.HEIGHT*1.0f)/Utility.WIDTH)*Utility.TAMANHO_REAL_LARGURA;
 		}
 
-		int angulo = 20;
 		int index = 0;
-		//index = this.world.addRampa(0, 300, 400, 10,angulo);
-		//playground.getChildren().add(world.bodys.get(index).shape);
+
 		index = world.addWall(100, 00, 8, 600);
 		playground.getChildren().add(world.bodys.get(index).shape);
 		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
@@ -701,27 +576,8 @@ public class Main extends Application {
 		System.out.println(world.bodys.get(index).shape.rotateProperty().get());
 		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
 		world.bodys.get(index).shape.setOnMouseDragged(circleOnMouseDraggedEventHandler);
-		world.bodys.get(index).shape.setOnMouseReleased(RampaOnFim);
+		world.bodys.get(index).shape.setOnMouseReleased(circleOnFim);
 		world.bodys.get(index).shape.setUserData(index);
-
-//		Circle meio = new Circle(world.bodys.get(index).shape.getLayoutX(), world.bodys.get(index).shape.getLayoutY(), 4);
-//		meio.setFill(Color.RED);
-//		playground.getChildren().add(meio);
-//
-//		Vec2 meiopos = new Vec2(world.bodys.get(index).physics.getPosition());
-//		Circle meio2 = new Circle(Utility.toPixelPosX(meiopos.x), Utility.toPixelPosY(meiopos.y), 4);
-//		meio2.setFill(Color.BLUE);
-//
-//		playground.getChildren().add(meio2);
-//		index = world.addSensor(0, 400, 600, 1);
-//		playground.getChildren().add(world.bodys.get(index).shape);
-//		playground.getChildren().add(world.bodys.get(index).imagem);
-//		world.addGround(200, 15);
-//
-//		index = world.addWall(0, 0, 4, 600);
-//		playground.getChildren().add(world.bodys.get(index).shape);
-//		index = world.addWall(600, 0, 4, 600);
-//		playground.getChildren().add(world.bodys.get(index).shape);
 
 
 
