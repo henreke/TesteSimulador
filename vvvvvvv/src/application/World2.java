@@ -73,7 +73,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        		body.shape.setLayoutX(Utility.toPixelPosX(nova.x)-(float)(body.shape_width/2));
 	        		//body.shape.setLayoutX(300);
 		        	body.shape.setLayoutY(Utility.toPixelPosY(nova.y)-(float)(body.shape_height/2));
-
+		        	
 
 	        	}
 	        	//System.out.println(body.physics.m_linearVelocity.y);
@@ -445,12 +445,16 @@ class Body3{
 	public float shape_height = 0;
 	public Forma shape_type = Forma.RECTANGLE;
 	public  XYChart.Series pontos_grafico = new Series();
+	public XYChart.Series  velocidadeX = new Series();
+	public XYChart.Series velocidadeY = new Series();
+	
 
 	public float getCosAngle(){
 		return (float) Math.cos(physics_angle);
 	}
 	public float getAngleGama(){
 		System.out.println(Math.atan(physics_width/physics_height));
+	
 		return (float) Math.atan(physics_width/physics_height);
 	}
 	public float getDiagonal(){
@@ -548,7 +552,7 @@ class Body3{
         fd.friction = fx.getFriction();
         fd.filter.categoryBits = fx.m_filter.categoryBits;// Body3.ContactType.BODYS.tipo();
         fd.filter.maskBits = fx.m_filter.maskBits;// Body3.ContactType.BODYS.tipo();
-
+        fd.restitution = fx.getRestitution();
         this.physics.destroyFixture(fx);
         this.physics.createFixture(fd);
 

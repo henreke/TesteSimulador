@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
@@ -93,6 +94,9 @@ public class Main extends Application {
 	//Gráfico partegvhf
 	@FXML
 	private LineChart grafico;
+	
+	@FXML
+	private ComboBox cmbvariaveisgrafico;
 
 	//Formas
 	@FXML

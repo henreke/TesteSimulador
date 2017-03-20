@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -14,7 +20,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="653.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
+<AnchorPane prefHeight="653.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
    <children>
       <SplitPane dividerPositions="0.09523809523809523" orientation="VERTICAL" prefHeight="653.0" prefWidth="596.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -110,6 +116,23 @@
                                              </children></AnchorPane>
                                     </content>
                                   </Tab>
+                                    <Tab text="Ajuste Gráfico">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <Label layoutX="7.0" layoutY="6.0" text="Variável" />
+                                                <ComboBox id="cmbvariavelgrafico" fx:id="cmbvariaveisgrafico" layoutX="15.0" layoutY="29.0" prefWidth="150.0" />
+                                                <Button layoutX="-8.0" layoutY="61.0" mnemonicParsing="false" text="Adicionar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                <TableView layoutY="116.0" prefHeight="182.0" prefWidth="195.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                                  <columns>
+                                                    <TableColumn prefWidth="130.33334350585938" text="C1" />
+                                                    <TableColumn minWidth="3.333343505859375" prefWidth="59.666656494140625" text="C2" />
+                                                  </columns>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </Tab>
                                 </tabs>
                               </TabPane>
                            </children>
