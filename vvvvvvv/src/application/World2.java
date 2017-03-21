@@ -29,6 +29,9 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 	public ArrayList<Body3> bodys;
     public ArrayList<Shape> shapes;
+    public float relogio = 0;
+    public int resolucao = 3;
+    public int ticks = 0;
 
 
 	public World2(Vec2 gravity) {
@@ -44,11 +47,26 @@ public class World2 extends org.jbox2d.dynamics.World{
 		this.step(1.0f/fps, velocityIterations, positionIterations);
 		refreshWorld();
 
+		ticks++;
+		float DT = fps/resolucao;
+		if (ticks > DT){
+			relogio+= DT;
+			ticks = 0;
+			//e ai atualiza os dados do gráfico
+		}
+
 	}
 	public void tick()
 	{
 		this.step(1.0f/60.f, 8, 3);
 		refreshWorld();
+		ticks++;
+		float DT = 60f/resolucao;
+		if (ticks > DT){
+			relogio+= DT;
+			ticks = 0;
+			//e ai atualiza os dados do gráfico com o tempo do relogio
+		}
 	}
 
 	private void refreshWorld(){
@@ -73,7 +91,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 	        		body.shape.setLayoutX(Utility.toPixelPosX(nova.x)-(float)(body.shape_width/2));
 	        		//body.shape.setLayoutX(300);
 		        	body.shape.setLayoutY(Utility.toPixelPosY(nova.y)-(float)(body.shape_height/2));
-		        	
+
 
 	        	}
 	        	//System.out.println(body.physics.m_linearVelocity.y);
@@ -447,14 +465,16 @@ class Body3{
 	public  XYChart.Series pontos_grafico = new Series();
 	public XYChart.Series  velocidadeX = new Series();
 	public XYChart.Series velocidadeY = new Series();
-	
+	public XYChart.Series  PosicaoX = new Series();
+	public XYChart.Series PosicaoY = new Series();
+
 
 	public float getCosAngle(){
 		return (float) Math.cos(physics_angle);
 	}
 	public float getAngleGama(){
 		System.out.println(Math.atan(physics_width/physics_height));
-	
+
 		return (float) Math.atan(physics_width/physics_height);
 	}
 	public float getDiagonal(){

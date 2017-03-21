@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.Scrollbar;
+import java.io.IOException;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -13,9 +14,12 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -94,7 +98,7 @@ public class Main extends Application {
 	//GrÃ¡fico partegvhf
 	@FXML
 	private LineChart grafico;
-	
+
 	@FXML
 	private ComboBox cmbvariaveisgrafico;
 
@@ -603,6 +607,35 @@ public class Main extends Application {
 
 		}
 
+	}
+
+	//Abertura de graficos
+	@FXML
+	private void graficoPy(){
+		if (this.index_selecionado>-1){
+
+
+			try {
+
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficoForm.fxml"));
+				Parent root1 = (Parent) fxmlLoader.load();
+	            Stage stage = new Stage();
+	            stage.setTitle("ABC");
+	            stage.setScene(new Scene(root1));
+	            stage.show();
+
+
+				// Dá ao controlador acesso à the main app.
+				GraficoController controller = fxmlLoader.getController();
+				//controller.setMainApp(this);
+				controller.setGraficoData(world.bodys.get(index_selecionado).pontos_grafico);
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
 	}
 
 	//Formas
