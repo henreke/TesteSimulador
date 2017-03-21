@@ -50,9 +50,10 @@ public class World2 extends org.jbox2d.dynamics.World{
 		ticks++;
 		float DT = fps/resolucao;
 		if (ticks > DT){
-			relogio+= DT;
+			relogio+= ((1f/fps)*DT);
 			ticks = 0;
 			//e ai atualiza os dados do gráfico
+			refreshDadosSerie();
 		}
 
 	}
@@ -63,9 +64,11 @@ public class World2 extends org.jbox2d.dynamics.World{
 		ticks++;
 		float DT = 60f/resolucao;
 		if (ticks > DT){
-			relogio+= DT;
+
+			relogio+= ((1f/60f)*DT);
 			ticks = 0;
 			//e ai atualiza os dados do gráfico com o tempo do relogio
+			refreshDadosSerie();
 		}
 	}
 
@@ -102,6 +105,42 @@ public class World2 extends org.jbox2d.dynamics.World{
 		}
 
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void refreshDadosSerie(){
+		for (Body3 body : bodys){
+
+
+			if (!body.fixo){
+				Vec2 posicao = body.physics.getPosition();
+				//float angulo = body.physics.getAngle();
+				Vec2 velocidade = body.physics.getLinearVelocity();
+				body.PosicaoX.getData().add(new XYChart.Data(relogio,posicao.x));
+				body.PosicaoY.getData().add(new XYChart.Data(relogio,posicao.y));
+				body.velocidadeX.getData().add(new XYChart.Data(relogio,velocidade.x));
+				body.velocidadeY.getData().add(new XYChart.Data(relogio,velocidade.y));
+
+			}
+		}
+
+	}
+	public void restartDados(){
+
+		for (Body3 body : bodys){
+
+
+			if (!body.fixo){
+
+				body.PosicaoX.getData().clear();
+				body.PosicaoY.getData().clear();
+				body.velocidadeX.getData().clear();
+				body.velocidadeY.getData().clear();
+
+			}
+		}
+		relogio = 0;
+		ticks = 0;
+
+	}
 	// TODO
 	/**
 	 *Aqui vamos criar uma lista dos Body que serï¿½o criados no World2 feito
@@ -135,6 +174,7 @@ public class World2 extends org.jbox2d.dynamics.World{
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
         bd.position.set(posX,posY);
+        bd.allowSleep = false;
         CircleShape cs = new CircleShape();
         cs.m_radius = raio;// * 0.1f;
         //bd.linearVelocity = new Vec2(0.0f,0.0f);

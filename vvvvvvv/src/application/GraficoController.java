@@ -25,7 +25,7 @@ public class GraficoController {
     	grafico.setCreateSymbols(false);
         grafico.getXAxis().setAutoRanging(true);
     	grafico.getYAxis().setAutoRanging(true);
-
+    	//Tesrte
     	grafico.getData().add(pontos_grafico);
     }
 

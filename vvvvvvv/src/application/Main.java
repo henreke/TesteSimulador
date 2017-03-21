@@ -48,8 +48,7 @@ public class Main extends Application {
 	World2 world;
 	double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
-    long tempo = 0;
-    int tempo_segundos = 0;
+
     boolean pare = false;
 
 
@@ -77,6 +76,9 @@ public class Main extends Application {
 	@FXML
 	private Label lab;
 
+	@FXML
+	private Label tempo_sim;
+
 	//Parte de adicionar Formas
 	@FXML
 	private Circle circle2;
@@ -89,6 +91,10 @@ public class Main extends Application {
 	@FXML
 	private TextField Vy;
 	@FXML
+	private TextField Px;
+	@FXML
+	private TextField Py;
+	@FXML
 	private TextField Coef_atrito;
 	@FXML
 	private TextField Coef_elasticidade;
@@ -99,8 +105,7 @@ public class Main extends Application {
 	@FXML
 	private LineChart grafico;
 
-	@FXML
-	private ComboBox cmbvariaveisgrafico;
+
 
 	//Formas
 	@FXML
@@ -294,7 +299,7 @@ public class Main extends Application {
 	@FXML
 	private void stoptime(){
 		timeline.stop();
-
+		//playground.setStyle("-fx-background-color: blue");
 
 
 	}
@@ -302,13 +307,7 @@ public class Main extends Application {
 	@FXML
 	private void recomecar(){
 
-		if (index_selecionado > -1)
-		{
-			world.bodys.get(index_selecionado).pontos_grafico.getData().clear();
-			//grafico.getData().add(world.bodys.get(index_selecionado).pontos_grafico.getData());
-		}
-		tempo = 0;
-		tempo_segundos = 0;
+		world.restartDados();
 	}
 	public static void main(String[] args) {
 		launch(args);
@@ -320,19 +319,7 @@ public class Main extends Application {
 			//Create time step. Set Iteration count 8 for velocity and 3 for positions
 
 			world.tick();
-			tempo++;
-			if (tempo > 20)
-			{
-				tempo = 0;
-				tempo_segundos++;
-
-				if (index_selecionado > -1){
-					float velocidade = world.bodys.get(index_selecionado).physics.getPosition().y;
-					//world.bodys.get(index_selecionado).pontos_grafico.getData().add(new XYChart.Data(tempo_segundos,velocidade));
-					world.bodys.get(index_selecionado).pontos_grafico.getData().add(new XYChart.Data(tempo_segundos,velocidade));
-
-				}
-			}
+			tempo_sim.setText("Tempo de Simulação "+String.format("%.2f",world.relogio)+"s");
 		}
     };
 
@@ -447,7 +434,7 @@ public class Main extends Application {
 	EventHandler<MouseEvent> circleOnFim = new EventHandler<MouseEvent>(){
 		@Override
         public void handle(MouseEvent t) {
-	        timeline.playFromStart();
+	       // timeline.playFromStart();
 		}
 
 	};
@@ -458,6 +445,8 @@ public class Main extends Application {
 		Body body = body3.physics;
 		Vx.setText(String.format("%.2f", body.m_linearVelocity.x));
 		Vy.setText(String.format("%.2f", body.m_linearVelocity.y));
+		Px.setText(String.format("%.2f", body.getPosition().x));
+		Py.setText(String.format("%.2f", body.getPosition().y));
 		Coef_atrito.setText(String.format("%.2f", body.getFixtureList().m_friction));
 		Coef_elasticidade.setText(String.format("%.2f", body.getFixtureList().m_restitution));
 		Massa.setText(String.format("%.2f", body.getMass()));
@@ -486,6 +475,9 @@ public class Main extends Application {
 
 		}
 		int index = this.world.CriarCirculo(8, 200, 20, Color.RED);
+		Stop[] stops = new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.BLUE)};
+		LinearGradient lg1 = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops);
+		world.bodys.get(index).shape.setFill(lg1);
 		playground.getChildren().add(world.bodys.get(index).shape);
 
 		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
@@ -600,6 +592,8 @@ public class Main extends Application {
 			System.out.println(Vx.getText().replace(',', '.'));
 			Vec2 velocidade = new Vec2( Float.parseFloat(Vx.getText().replace(',', '.')),Float.parseFloat(Vy.getText().replace(',', '.')) );
 			world.bodys.get(index_selecionado).physics.setLinearVelocity(velocidade);
+			Vec2 posicao = new Vec2( Float.parseFloat(Px.getText().replace(',', '.')),Float.parseFloat(Py.getText().replace(',', '.')) );
+			world.bodys.get(index_selecionado).physics.setTransform(posicao, world.bodys.get(index_selecionado).physics.getAngle());
 			world.bodys.get(index_selecionado).physics.getFixtureList().m_friction = Float.parseFloat(Coef_atrito.getText().replace(',', '.'));
 			world.bodys.get(index_selecionado).physics.getFixtureList().m_restitution = Float.parseFloat(Coef_elasticidade.getText().replace(',', '.'));
 			//world.bodys.get(index_selecionado).physics.mass = Float.parseFloat(Coef_atrito.getText().replace(',', '.'));
@@ -611,6 +605,90 @@ public class Main extends Application {
 
 	//Abertura de graficos
 	@FXML
+	private void graficoVx(){
+		if (this.index_selecionado>-1){
+
+
+			try {
+
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficoForm.fxml"));
+				Parent root1 = (Parent) fxmlLoader.load();
+	            Stage stage = new Stage();
+	            stage.setTitle("Velocidade X");
+	            stage.setScene(new Scene(root1));
+	            stage.show();
+
+
+				// Dá ao controlador acesso à the main app.
+				GraficoController controller = fxmlLoader.getController();
+				//controller.setMainApp(this);
+				controller.setGraficoData(world.bodys.get(index_selecionado).velocidadeX);
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	@FXML
+	private void graficoVy(){
+		if (this.index_selecionado>-1){
+
+
+			try {
+
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficoForm.fxml"));
+				Parent root1 = (Parent) fxmlLoader.load();
+	            Stage stage = new Stage();
+	            stage.setTitle("Velocidade Y");
+	            stage.setScene(new Scene(root1));
+	            stage.show();
+
+
+				// Dá ao controlador acesso à the main app.
+				GraficoController controller = fxmlLoader.getController();
+				//controller.setMainApp(this);
+				controller.setGraficoData(world.bodys.get(index_selecionado).velocidadeY);
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	@FXML
+	private void graficoPx(){
+		if (this.index_selecionado>-1){
+
+
+			try {
+
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficoForm.fxml"));
+				Parent root1 = (Parent) fxmlLoader.load();
+	            Stage stage = new Stage();
+	            stage.setTitle("Posição X");
+	            stage.setScene(new Scene(root1));
+	            stage.show();
+
+
+				// Dá ao controlador acesso à the main app.
+				GraficoController controller = fxmlLoader.getController();
+				//controller.setMainApp(this);
+				controller.setGraficoData(world.bodys.get(index_selecionado).PosicaoX);
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	@FXML
 	private void graficoPy(){
 		if (this.index_selecionado>-1){
 
@@ -620,7 +698,7 @@ public class Main extends Application {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficoForm.fxml"));
 				Parent root1 = (Parent) fxmlLoader.load();
 	            Stage stage = new Stage();
-	            stage.setTitle("ABC");
+	            stage.setTitle("Posição Y");
 	            stage.setScene(new Scene(root1));
 	            stage.show();
 
@@ -628,7 +706,7 @@ public class Main extends Application {
 				// Dá ao controlador acesso à the main app.
 				GraficoController controller = fxmlLoader.getController();
 				//controller.setMainApp(this);
-				controller.setGraficoData(world.bodys.get(index_selecionado).pontos_grafico);
+				controller.setGraficoData(world.bodys.get(index_selecionado).PosicaoY);
 
 
 			} catch (IOException e) {
