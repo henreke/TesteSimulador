@@ -14,7 +14,7 @@ Com a escolha do Java, o passo seguinte foi a escolha do pacote para a construç
 
 O JavaFX não foi apresentado durante o curso de Engenharia da Computação. Dessa forma foi necessário estudar o pacote, para a criação da interface do simulador e dos objetos que seriam simulados. Para o estudo foi utilizada a documentação presente no site da Oracle \url{http://docs.oracle.com/javase/8/javase-clienttechnologies.htm}. Para \textit{engine} jbox2D a documentação é escassa e não possui um manual de utilização. Dessa forma, foi necessário a leitura do manual da engine box2D que foi escrita para C++ já que a jbox2D é baseada nesta. 
 
-O grande desafio deste trabalho foi integrar os resultados calculados pela \textit{engine} com a parte visual que está sendo implementada pelo JavaFX. Os seguintes problemas tiveram que ser tratatados:
+O grande desafio deste trabalho foi integrar os resultados calculados pela \textit{engine} com a parte visual que está sendo implementada pelo JavaFX. Os seguintes problemas tiveram que ser tratados:
 
 \begin{itemize}
 	\item As coordenadas de espaço que são utilizadas na jbox2D são em metros já no JavaFX as coordenadas são em pixels. Sendo assim, foi necessário a implementação de funções para traduzir essas informações entre as bibliotecas.
@@ -23,6 +23,66 @@ O grande desafio deste trabalho foi integrar os resultados calculados pela \text
 	\item Para que as coordenadas sejam transformadas entre as bibliotecas é necessário que as dimensões do quadro que a simulação está sendo exibida sejam passadas como parâmetro e também as dimensões em metros do mundo que está sendo simulado pela jbox2D. A proporção entre largura e altura em \textit{pixels} deve ser a mesma proporção entre largura e altura do mundo criado pelo jbox2D.
 \end{itemize}
 
+Depois resolvidos os problemas, todas essas funções de conversão entre as coordenadas dos dois pacotes foram condensadas em uma classe chamada \textit{World2}. \textit{World2} é uma extensão da classe \textit{World} da \textit{jbox2D}. Conforme os objetivos desse trabalho, a classe\textit{ World2} serve de base para a criação do simulador onde os futuros desenvolvedores podem utiliza-la de maneira objetiva sem a necessidade de preocupação com os problemas citados acima.
+
+\section{Simulador}
+Concluída a parte de integração, é a hora de implementar a interface gráfica do simulador. A interface foi montada de acordo com \citeonline{RevBibConcepcao} ver figura \ref{res_figura1}.  O simulador foi dividido em quatro partes: Área de controle da simulação, Área de adição de objetos, Área de ajustes de objetos e finalmente a Área de simulação.
+
+\begin{figure}[!htb]
+	\caption{Tela Inicial do Simulador}
+	\centering
+	\includegraphics[scale=0.4]{Imagens/telaSim.png}
+	
+	\legend{Fonte: \url{http://box2d.org/manual.pdf}}
+	\label{res_figura1}
+\end{figure}
+
+
+\section{Área de Simulação}
+Na parte destacada da figura \ref{res_figura2} se encontra a área de simulação. É o mundo a ser simulado, possui gravidade que pode ser ajustada clicando na aba de Ajuste do Mundo. Além da gravidade é possível também alterar o tamanho do mundo que está sendo visualizado nesse quadro, o usuário pode definir sua altura ou largura também na aba Ajuste do Mundo. 
+A Área de simulação é um quadro em branco no qual o professor pode montar o experimento que desejar para ser visualizado durante sua aula. É nessa área que ocorre a visualização dos fenômenos físicos estudados. É possível interagir com  os objetos dessa área através do mouse, o objeto pode ser selecionado ou reposicionado apenas clicando e arrastando para a posição desejada. 
+
+\begin{figure}[!htb]
+	\caption{Área de Simulação}
+	\centering
+	\includegraphics[scale=0.4]{Imagens/telaSim.png}
+	
+	\legend{Fonte: \url{}}
+	\label{res_figura2}
+\end{figure}
+
+
+\section{Área de Controle da Simulação}
+É o setor selecionado em vermelho na figura \ref{res_figura3}. Nesse setor é possível controlar a simulação das seguintes formas:
+
+\begin{itemize}
+	\item Inciar a simulação, utilizando o botão Iniciar.
+	\item Parar a simulação, utilizando o botão Parar.
+	\item Salvar simulação, utilizando o botão Salvar, é possível salvar toda a configuração da simulação para que seja retomada em qualquer momento desejado, essa função pode ser utilizada pelo professor criar um exemplo desejado para ser utilizado durante a sua aula. É gerado um arquivo que pode ser salvo no local escolhido pelo professor, de acordo com a figura \ref{salvar}.
+	\item Carregar Simulação, utilizando o botão Carregar Simulação, é possível carregar uma simulação previamente preparada pelo próprio usuário ou por um usuário diferente de acordo com a figura \ref{carregar}, dessa forma, o professor pode compartilhar a simulação com os alunos ou passa-la como algum tipo de exercício ou esse arquivo pode ser compartilhado entre os próprios professores.
+	\item reiniciar, através do botão Reiniciar, a simulação retorna para o estado inicial no momento em que o arquivo foi carregado.
+	\item Tempo de Simulação, há um \textit{label} no canto direito que indica o tempo decorrido durante a simulação.
+\end{itemize}
+
+\section{Área de Adição de Figuras}
+Área circulada em vermelho da figura \ref{} nesse parte do programa é onde o usuário pode escolher os objetos que desejar adicionar a simulação há 6 tipos de objetos:
+\begin{itemize}
+	\item Parede, é o item 1 da figura \ref{} o objeto parede serve para conter os objetos que so movimentam dentro do quadro de simulação. A parede é imóvel.
+	\item Chão, é o item 2 da figura \ref{} pode ser usado como um limite de espaço inferior da simulação, ele é imóvel.
+	\item Plano inclinado, é o item 3 da figura \ref{}  é utilizado para simulações de plano inclinado em que os objetos podem rolar sobre o plano e tem seu vetor de velocidade governado pela inclinação do plano. Também é imóvel.
+	\item Circulo, é o item 4 da figura \ref{} é um corpo móvel em que as leis da física são aplicadas, é ele quem vai ser mover durante a simulação.
+	\item Retângulo, é o item 5 da figura \ref{} é um corpo móvel em que as leis da física são aplicadas, é ele quem vai ser mover durante a simulação.
+	\item Sensor, é o item 6 da figura \ref{} Ele não interage fisicamente com os objetos da simulação. Ele é utilizado para parar a simulação quando o objeto encosta nele ou quando o objeto passa completamente por ele. Isso pode ser utilizado para visualizar as variáveis desejadas por exemplo quando um objeto cai e acerta o chão.
+\end{itemize}
+
+\begin{figure}[!htb]
+	\caption{Área de Simulação}
+	\centering
+	\includegraphics[scale=0.4]{Imagens/telaSim.png}
+	
+	\legend{Fonte: \url{}}
+	\label{res_figura3}
+\end{figure}
 
 As classe fundamentais da engine são: World, Body, BodyDef, FixtureDef.
 
