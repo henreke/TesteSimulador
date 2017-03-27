@@ -1,5 +1,6 @@
 package application;
 
+import java.awt.Component;
 import java.awt.Scrollbar;
 import java.io.IOException;
 
@@ -28,7 +29,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -102,8 +109,7 @@ public class Main extends Application {
 	private TextField Massa;
 
 	//GrÃ¡fico partegvhf
-	@FXML
-	private LineChart grafico;
+
 
 
 
@@ -132,8 +138,7 @@ public class Main extends Application {
 			this.world = new World2(new Vec2(0.0f,-10.0f));
 			System.out.println("Iniciou");
 
-
-
+			
 	        //fim
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -292,7 +297,7 @@ public class Main extends Application {
 
 	private void ConfigGrafico(){
 
-		grafico.setCreateSymbols(false);
+		//grafico.setCreateSymbols(false);
 
 	}
 
@@ -308,6 +313,10 @@ public class Main extends Application {
 	private void recomecar(){
 
 		world.restartDados();
+		BackgroundImage myBI= new BackgroundImage(new Image(getClass().getResource("background.png").toExternalForm(),playground.getWidth(),playground.getHeight(),false,true),
+		        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+		          BackgroundSize.DEFAULT);
+		playground.setBackground(new Background(myBI));
 	}
 	public static void main(String[] args) {
 		launch(args);
@@ -319,7 +328,7 @@ public class Main extends Application {
 			//Create time step. Set Iteration count 8 for velocity and 3 for positions
 
 			world.tick();
-			tempo_sim.setText("Tempo de Simulação "+String.format("%.2f",world.relogio)+"s");
+			tempo_sim.setText("Tempo de Simulaï¿½ï¿½o "+String.format("%.2f",world.relogio)+"s");
 		}
     };
 
@@ -402,9 +411,9 @@ public class Main extends Application {
 		        	ball.GuardarPosicaoVerticeInicial();
 		        	CarregarVariaveisObjetos(ball);
 		        	carregarFormasObjetos(ball);
-		        	grafico.getData().add(world.bodys.get(index_selecionado).pontos_grafico);
-		        	grafico.getXAxis().setAutoRanging(true);
-		        	grafico.getYAxis().setAutoRanging(true);
+		        	//grafico.getData().add(world.bodys.get(index_selecionado).pontos_grafico);
+		        	//grafico.getXAxis().setAutoRanging(true);
+		        	//grafico.getYAxis().setAutoRanging(true);
 		            timeline.stop();
 		        }
 		    };
@@ -475,7 +484,7 @@ public class Main extends Application {
 
 		}
 		int index = this.world.CriarCirculo(8, 200, 20, Color.RED);
-		Stop[] stops = new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.BLUE)};
+		Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.BLUE)};
 		LinearGradient lg1 = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops);
 		world.bodys.get(index).shape.setFill(lg1);
 		playground.getChildren().add(world.bodys.get(index).shape);
@@ -571,18 +580,44 @@ public class Main extends Application {
 		index = this.world.addRampa(100, 300, 500, 100,angulo);
 		playground.getChildren().add(world.bodys.get(index).shape);
 
-		System.out.println("Angulo calculado");
-		System.out.println(Utility.tograus(world.bodys.get(index).physics.getAngle()));
-		System.out.println(world.bodys.get(index).shape.rotateProperty().get());
 		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
 		world.bodys.get(index).shape.setOnMouseDragged(circleOnMouseDraggedEventHandler);
 		world.bodys.get(index).shape.setOnMouseReleased(circleOnFim);
 		world.bodys.get(index).shape.setUserData(index);
-
+		
+		
+//		BackgroundImage myBI= new BackgroundImage(new Image(getClass().getResource("tijolos.png").toExternalForm(),10,12,false,true),
+//		        BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+//		          BackgroundSize.DEFAULT);
+//		
+//		((Rectangle)world.bodys.get(index).shape).setFill(new Image(getClass().getResource("tijolos.png").toExternalForm(),10,12,false,true));
+//
 
 
 	}
+	@FXML
+	private void addSensor(){
 
+		if (this.world == null){
+			this.world = new World2(new Vec2(0.0f,-10.0f));
+			Utility.WIDTH = (int)playground.getWidth();
+			Utility.HEIGHT = (int)playground.getHeight();
+			Utility.TAMANHO_REAL_ALTURA = ((Utility.HEIGHT*1.0f)/Utility.WIDTH)*Utility.TAMANHO_REAL_LARGURA;
+		}
+
+		int angulo = 0;
+		int index = 0;
+		index = this.world.addRampa(100, 300, 500, 100,angulo);
+		playground.getChildren().add(world.bodys.get(index).shape);
+
+		world.bodys.get(index).shape.setOnMousePressed(circleOnMousePressedEventHandler);
+		world.bodys.get(index).shape.setOnMouseDragged(circleOnMouseDraggedEventHandler);
+		world.bodys.get(index).shape.setOnMouseReleased(circleOnFim);
+		world.bodys.get(index).shape.setUserData(index);
+		
+		
+
+	}
 
 	//Aplicar nvas caracteristicas
 	@FXML
@@ -619,7 +654,7 @@ public class Main extends Application {
 	            stage.show();
 
 
-				// Dá ao controlador acesso à the main app.
+				// Dï¿½ ao controlador acesso ï¿½ the main app.
 				GraficoController controller = fxmlLoader.getController();
 				//controller.setMainApp(this);
 				controller.setGraficoData(world.bodys.get(index_selecionado).velocidadeX);
@@ -647,7 +682,7 @@ public class Main extends Application {
 	            stage.show();
 
 
-				// Dá ao controlador acesso à the main app.
+				// Dï¿½ ao controlador acesso ï¿½ the main app.
 				GraficoController controller = fxmlLoader.getController();
 				//controller.setMainApp(this);
 				controller.setGraficoData(world.bodys.get(index_selecionado).velocidadeY);
@@ -670,12 +705,12 @@ public class Main extends Application {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficoForm.fxml"));
 				Parent root1 = (Parent) fxmlLoader.load();
 	            Stage stage = new Stage();
-	            stage.setTitle("Posição X");
+	            stage.setTitle("Posiï¿½ï¿½o X");
 	            stage.setScene(new Scene(root1));
 	            stage.show();
 
 
-				// Dá ao controlador acesso à the main app.
+				// Dï¿½ ao controlador acesso ï¿½ the main app.
 				GraficoController controller = fxmlLoader.getController();
 				//controller.setMainApp(this);
 				controller.setGraficoData(world.bodys.get(index_selecionado).PosicaoX);
@@ -698,12 +733,12 @@ public class Main extends Application {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficoForm.fxml"));
 				Parent root1 = (Parent) fxmlLoader.load();
 	            Stage stage = new Stage();
-	            stage.setTitle("Posição Y");
+	            stage.setTitle("Posiï¿½ï¿½o Y");
 	            stage.setScene(new Scene(root1));
 	            stage.show();
 
 
-				// Dá ao controlador acesso à the main app.
+				// Dï¿½ ao controlador acesso ï¿½ the main app.
 				GraficoController controller = fxmlLoader.getController();
 				//controller.setMainApp(this);
 				controller.setGraficoData(world.bodys.get(index_selecionado).PosicaoY);

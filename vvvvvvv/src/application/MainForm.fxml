@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -15,15 +23,24 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="653.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
+<AnchorPane prefHeight="653.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
    <children>
       <SplitPane dividerPositions="0.09523809523809523" orientation="VERTICAL" prefHeight="653.0" prefWidth="596.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane fx:id="paineltop" minHeight="0.0" minWidth="0.0" prefHeight="43.0" prefWidth="594.0">
                <children>
-                  <Button layoutX="78.0" layoutY="31.0" mnemonicParsing="false" onAction="#stoptime" text="Parar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="78.0" />
-                  <Button layoutX="110.0" layoutY="1.0" mnemonicParsing="false" onAction="#starttime" text="Iniciar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
-                  <Button layoutX="151.0" layoutY="31.0" mnemonicParsing="false" onAction="#recomecar" text="Recomeçar" AnchorPane.bottomAnchor="0.0" />
+                  <HBox layoutY="30.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button layoutX="110.0" layoutY="1.0" mnemonicParsing="false" onAction="#starttime" text="Iniciar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
+                        <Button layoutX="68.0" layoutY="30.0" mnemonicParsing="false" onAction="#stoptime" text="Parar" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="68.0" />
+                        <Button layoutX="127.0" layoutY="30.0" mnemonicParsing="false" text="Salvar" />
+                        <Button layoutX="197.0" layoutY="30.0" mnemonicParsing="false" text="Carregar" />
+                        <Button layoutX="320.0" layoutY="30.0" mnemonicParsing="false" onAction="#recomecar" text="Recomeçar" AnchorPane.bottomAnchor="1.0" />
+                     </children>
+                     <padding>
+                        <Insets top="15.0" />
+                     </padding>
+                  </HBox>
                   <Label fx:id="tempo_sim" layoutX="749.0" layoutY="25.0" text="Tempo de Simulação 0s" AnchorPane.rightAnchor="5.0">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -35,7 +52,7 @@
                <children>
                   <SplitPane fx:id="split_toolbox_playground" dividerPositions="0.6640926640926641" prefHeight="472.0" prefWidth="520.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane fx:id="playground" minHeight="0.0" minWidth="0.0" onMouseMoved="#ShapeMouseOverPane" prefHeight="589.0" prefWidth="403.0" />
+                      <AnchorPane fx:id="playground" minHeight="0.0" minWidth="0.0" onMouseMoved="#ShapeMouseOverPane" prefHeight="589.0" prefWidth="403.0" styleClass="background.css" />
                       <AnchorPane fx:id="toolbox" minHeight="0.0" minWidth="0.0" prefHeight="448.0" prefWidth="222.0">
                            <children>
                               <TabPane layoutX="14.0" layoutY="14.0" prefHeight="274.0" prefWidth="195.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -58,22 +75,23 @@
                                                 <Rectangle id="rampa" arcHeight="5.0" arcWidth="5.0" fill="#6b6b6b" height="17.0" layoutX="64.0" layoutY="94.0" onMouseClicked="#addRampa" rotate="37.9" stroke="BLACK" strokeType="INSIDE" width="108.0" />
                                                 <Rectangle id="chao" arcHeight="5.0" arcWidth="5.0" fill="#909090" height="17.0" layoutX="56.0" layoutY="153.0" onMouseClicked="#addGround" stroke="BLACK" strokeType="INSIDE" width="103.0" />
                                                 <Rectangle id="quadrado" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="44.0" layoutX="137.0" layoutY="15.0" onMouseClicked="#addQuadrado" stroke="BLACK" strokeType="INSIDE" width="44.0" />
+                                                <Button layoutX="209.0" layoutY="24.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" text="Sensor Colisão Inicial" />
+                                                <Button layoutX="209.0" layoutY="104.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="151.0" text="Sensor Colisão Final" />
                                              </children>
                                           </AnchorPane>
                                        </content>
                                     </Tab>
-                                    <Tab text="Gráficos">
+                                    <Tab text="Ajuste do Mundo">
                                       <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-                                                <LineChart id="grafico" fx:id="grafico" layoutX="-11.0" layoutY="18.0" prefHeight="142.0" prefWidth="178.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                  <xAxis>
-                                                    <NumberAxis side="BOTTOM" />
-                                                  </xAxis>
-                                                  <yAxis>
-                                                    <NumberAxis side="LEFT" />
-                                                  </yAxis>
-                                                </LineChart>
+                                                <Label layoutX="14.0" layoutY="14.0" text="Gravidade(m/s2):" />
+                                                <TextField id="gravidade" layoutX="159.0" layoutY="9.0" prefHeight="27.0" prefWidth="63.0" />
+                                                <Label layoutX="14.0" layoutY="56.0" text="Largura do Mundo(m):" />
+                                                <Label layoutX="14.0" layoutY="97.0" text="Altura do Mundo(m):" />
+                                                <Button layoutX="14.0" layoutY="154.0" mnemonicParsing="false" text="Aplicar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                <TextField layoutX="159.0" layoutY="51.0" prefHeight="27.0" prefWidth="64.0" />
+                                                <TextField layoutX="159.0" layoutY="92.0" prefHeight="27.0" prefWidth="65.0" />
                                              </children>
                                           </AnchorPane>
                                       </content>
@@ -141,11 +159,6 @@
                                              </children></AnchorPane>
                                     </content>
                                   </Tab>
-                                    <Tab text="Ajuste Gráfico">
-                                      <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" visible="false" />
-                                      </content>
-                                    </Tab>
                                 </tabs>
                               </TabPane>
                            </children>

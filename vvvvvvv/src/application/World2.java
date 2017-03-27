@@ -52,7 +52,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 		if (ticks > DT){
 			relogio+= ((1f/fps)*DT);
 			ticks = 0;
-			//e ai atualiza os dados do gráfico
+			//e ai atualiza os dados do grï¿½fico
 			refreshDadosSerie();
 		}
 
@@ -67,7 +67,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 			relogio+= ((1f/60f)*DT);
 			ticks = 0;
-			//e ai atualiza os dados do gráfico com o tempo do relogio
+			//e ai atualiza os dados do grï¿½fico com o tempo do relogio
 			refreshDadosSerie();
 		}
 	}
@@ -397,7 +397,7 @@ public class World2 extends org.jbox2d.dynamics.World{
 
 		rampa.setLayoutX(PosX);
 		rampa.setLayoutY(PosY);
-		rampa.setRotate(-rotation-0.27);
+		rampa.setRotate(-rotation);//-0.27);
 		//rampa.getTransforms().add(new Rotate(-rotation, width/2,height/2,0));
 
 //		System.out.println("Meio do fgdfbixo");
@@ -427,58 +427,55 @@ public class World2 extends org.jbox2d.dynamics.World{
     }
 
 
-    public  int addSensor(float posX, float posY,float width,float height){
+    public  int addSensor(int PosX, int PosY, float width, float height, float rotation){
 
-        PolygonShape ps = new PolygonShape();
-        ps.setAsBox(Utility.toWidth(width), Utility.toHeight(height));
-
-
-        BodyDef bd = new BodyDef();
-        float x = Utility.toPosX(posX);
-    	float y =  Utility.toPosY(posY);
-        bd.position.set(x,y);
-
-        //Teste sensor
-        PolygonShape ps2 = new PolygonShape();
-        ps2.setAsBox(width, height);
-        FixtureDef fd2 = new FixtureDef();
-        fd2.shape = ps2;
-        fd2.isSensor = true;
-        fd2.filter.categoryBits = Body3.ContactType.BODYS.tipo();
-        fd2.filter.maskBits = Body3.ContactType.BODYS.tipo();
+    	PolygonShape ps = new PolygonShape();
+        ps.setAsBox(Utility.toWidth(width)/2f, Utility.toHeight(height)/2f);
 
 
-      //Forma Parede
-       Rectangle parede = new Rectangle(width, height);
-		parede.setLayoutX(posX);
-		parede.setLayoutY(posY);
-		parede.setFill(Color.GREEN);
+        FixtureDef fd = new FixtureDef();
 
-		//Imagem do sensor
-        Image image = new Image(World2.class.getResourceAsStream("sensor.png"));
-        ImageView iv = new ImageView();
-        iv.setImage(image);
-        iv.setFitWidth(60);
-        iv.setPreserveRatio(true);
-        iv.setSmooth(true);
-        iv.setCache(true);
-
-        iv.setLayoutX(posX);
-        iv.setLayoutY(posY);
-
-		Body3 body = new Body3();
+        fd.shape = ps;
+        fd.friction = 0.1f;
+        fd.filter.categoryBits = Body3.ContactType.BODYS.tipo();
+        fd.filter.maskBits = Body3.ContactType.BODYS.tipo();
+        fd.isSensor = true;
+    	BodyDef bd = new BodyDef();
+    	float x = (Utility.toPosX(PosX+width/2));
+    	float y =  Utility.toPosY(PosY+height/2);
+        bd.position.set(x, y);
+        if (rotation != 0f) { bd.angle = Utility.torad(rotation); }
 
 
-        body.physics = this.createBody(bd); //aqui ta diferente do tutorial
-        body.physics.createFixture(fd2);
-        body.physics.setUserData(body);
 
-        body.imagem = iv;
-        body.shape = parede;
-        body.fixo = true;
+        Body3 body = new Body3();
+
+        body.physics = this.createBody(bd);
+        body.physics.createFixture(fd);
+
+
+
+
+		//Forma
+        Rectangle rampa = new Rectangle(width, height);
+
+		rampa.setLayoutX(PosX);
+		rampa.setLayoutY(PosY);
+		rampa.setRotate(-rotation);
+		rampa.setFill(Color.RED);
+
+		body.shape = rampa;
+		body.fixo = true;
+		body.physics.setUserData(body);
+
+		body.physics_width = Utility.toWidth(width/2);
+        body.physics_height = Utility.toHeight(height/2);
+        body.physics_angle = bd.angle;
+
         body.shape_height = height;
         body.shape_width = width;
-        bodys.add(body);
+        body.shape_type = Body3.Forma.RECTANGLE;
+		bodys.add(body);
         //world.createBody(bd).createShape(sd);;
 		return bodys.indexOf(body);
     }
