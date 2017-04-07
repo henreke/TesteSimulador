@@ -37,7 +37,7 @@ public class GraficoController {
 
     }
     public void setGraficoData(XYChart.Series pontos_grafico){
-    	grafico.setCreateSymbols(false);
+    	grafico.setCreateSymbols(true);
         grafico.getXAxis().setAutoRanging(true);
     	grafico.getYAxis().setAutoRanging(true);
     	grafico.getData().add(pontos_grafico);
