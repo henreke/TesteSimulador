@@ -328,7 +328,7 @@ public class Main extends Application {
 			//Create time step. Set Iteration count 8 for velocity and 3 for positions
 
 			world.tick();
-			tempo_sim.setText("Tempo de Simula��o "+String.format("%.2f",world.relogio)+"s");
+			tempo_sim.setText("Tempo de Simulação "+String.format("%.2f",world.relogio)+"s");
 		}
     };
 
@@ -705,7 +705,7 @@ public class Main extends Application {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficoForm.fxml"));
 				Parent root1 = (Parent) fxmlLoader.load();
 	            Stage stage = new Stage();
-	            stage.setTitle("Posi��o X");
+	            stage.setTitle("Posição X");
 	            stage.setScene(new Scene(root1));
 	            stage.show();
 
@@ -733,7 +733,7 @@ public class Main extends Application {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficoForm.fxml"));
 				Parent root1 = (Parent) fxmlLoader.load();
 	            Stage stage = new Stage();
-	            stage.setTitle("Posi��o Y");
+	            stage.setTitle("Posição Y");
 	            stage.setScene(new Scene(root1));
 	            stage.show();
 
